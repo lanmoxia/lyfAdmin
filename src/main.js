@@ -4,6 +4,8 @@ import router from './router'
 
 import svgIcon from '@/components/Svgicon'
 
+import "@/styles/index.scss"
+
 const app = createApp(App)
 
 //element

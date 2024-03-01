@@ -1,0 +1,51 @@
+@mixin flex-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-box-set($jc: center, $ai: center) {
+  @include flex-box();
+
+  @if($jc ==center) {
+    justify-content: center;
+  }
+
+  @if($jc ==start) {
+    justify-content: flex-start;
+  }
+
+  @if($jc ==end) {
+    justify-content: flex-end;
+  }
+
+  @if($jc ==between) {
+    justify-content: space-between;
+  }
+
+  @if($ai ==center) {
+    align-items: center;
+  }
+
+  @if($ai ==start) {
+    align-items: flex-start;
+  }
+
+  @if($ai ==end) {
+    align-items: flex-end;
+  }
+
+  @if($ai ==stretch) {
+    align-items: stretch;
+  }
+}
+
+@mixin ellipsis($row: 1) {
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $row;
+  line-clamp: $row;
+  -webkit-box-orient: vertical;
+}
