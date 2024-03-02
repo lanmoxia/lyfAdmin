@@ -1,11 +1,13 @@
-@mixin flex-box {
+@mixin flex-box($direction: row, $wrap: nowrap) {
   display: flex;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
   justify-content: space-between;
   align-items: center;
 }
 
-@mixin flex-box-set($jc: center, $ai: center) {
-  @include flex-box();
+@mixin flex-box-set($direction: row, $wrap: nowrap, $jc: center, $ai: center) {
+  @include flex-box($direction, $wrap);
 
   @if($jc ==center) {
     justify-content: center;
@@ -21,6 +23,10 @@
 
   @if($jc ==between) {
     justify-content: space-between;
+  }
+
+  @if($jc ==around) {
+    justify-content: space-around;
   }
 
   @if($ai ==center) {
