@@ -10,7 +10,6 @@ export var privateRoutes = []
 /**
  * 公共路由
  */
-
 export var publicRoutes = [
   {
     path: '/login',
