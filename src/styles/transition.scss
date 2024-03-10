@@ -1,0 +1,40 @@
+/* 面包屑导航的进入和离开动画 */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+  transition: all 0.5s;
+  /* 应用于所有属性的过渡效果，持续时间为0.5秒 */
+}
+
+.breadcrumb-enter-from,
+.breadcrumb-leave-to {
+  opacity: 0;
+  /* 初始状态为完全透明 */
+  transform: translateX(20px);
+  /* 在X轴方向上移动20像素 */
+}
+
+.breadcrumb-leave-active {
+  position: absolute;
+  /* 离开时使用绝对定位 */
+}
+
+/* 淡入淡出加平移的过渡效果 */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.5s;
+  /* 应用于所有属性的过渡效果，持续时间为0.5秒 */
+}
+
+.fade-transform-enter-from {
+  opacity: 0;
+  /* 进入动画的初始状态为完全透明 */
+  transform: translateX(-30px);
+  /* 在X轴方向上向左移动30像素 */
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  /* 离开动画的结束状态为完全透明 */
+  transform: translateX(30px);
+  /* 在X轴方向上向右移动30像素 */
+}

@@ -1,3 +1,34 @@
+//定义通用的 `css-animation`
+@mixin clearfix {
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6; // 设置滚动条轨道的背景颜色
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px; // 设置滚动条的宽度
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf; // 设置滚动条滑块的背景颜色
+    border-radius: 20px; // 设置滚动条滑块的圆角
+  }
+}
+
+@mixin relative {
+  position: relative; // 设置定位为相对定位
+  width: 100%; // 设置宽度为100%
+  height: 100%; // 设置高度为100%
+}
+
+
 @mixin flex-box($direction: row, $wrap: nowrap) {
   display: flex;
   flex-direction: $direction;

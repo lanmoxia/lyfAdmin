@@ -1,0 +1,182 @@
+// 覆盖一些 Element UI 的样式
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important; // 设置面包屑内部元素和链接的字体权重为400
+  color: #8c8c8c !important;
+
+  &:hover {
+    color: #1d1d1d !important;
+    text-decoration: none !important;
+  }
+}
+
+.el-upload {
+  input[type="file"] {
+    display: none !important; // 隐藏文件上传控件的默认输入框
+  }
+}
+
+.el-upload__input {
+  display: none; // 隐藏上传组件的输入框
+}
+
+.cell {
+  .el-tag {
+    margin-right: 0px; // 设置标签组件在单元格内无右边距
+  }
+}
+
+.small-padding {
+  .cell {
+    padding-left: 5px; // 设置单元格的左右内边距为5px
+    padding-right: 5px;
+  }
+}
+
+.fixed-width {
+  .el-button--mini {
+    padding: 7px 10px; // 设置迷你按钮的内边距和最小宽度
+    min-width: 60px;
+  }
+}
+
+.status-col {
+  .cell {
+    padding: 0 10px; // 设置状态列中单元格的内边距和文本对齐方式
+    text-align: center;
+
+    .el-tag {
+      margin-right: 0px; // 设置状态列中标签组件无右边距
+    }
+  }
+}
+
+// 修复 Element UI 的一个问题 https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none; // 移除对话框的变换效果
+  left: 0;
+  position: relative; // 设置对话框相对定位
+  margin: 0 auto; // 水平居中对话框
+}
+
+// 优化 Element UI 上传组件的样式
+.upload-container {
+  .el-upload {
+    width: 100%; // 设置上传组件的宽度为100%
+
+    .el-upload-dragger {
+      width: 100%; // 设置拖拽区域的宽度和高度
+      height: 200px;
+    }
+  }
+}
+
+// 下拉菜单
+.el-dropdown-menu {
+  a {
+    display: block // 设置链接为块级元素
+  }
+}
+
+// 修复过滤项中日期选择器 UI 的一个问题
+.el-range-editor.el-input__inner {
+  display: inline-flex !important; // 设置日期范围编辑器为内联弹性盒子
+}
+
+// 修复日期选择器 CSS 动画样式的问题
+.el-range-separator {
+  box-sizing: content-box; // 设置日期范围分隔符的盒模型
+}
+
+/** 分隔符文字左右显示间隔样式 */
+:deep(.el-divider__text) {
+  background-color: #f5f5f5;
+}
+
+/**登录提示样式修改 */
+
+:deep(.el-descriptions__body) {
+  background-color: transparent;
+}
+
+:deep(.el-descriptions__body .el-descriptions__table:not(.is-bordered) .el-descriptions__cell) {
+  padding-bottom: 0;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+:deep(.el-descriptions__label:not(.is-bordered-label)) {
+  padding: 3px 7px;
+  margin: 3px 7px;
+  color: rgba(0, 0, 0, 0.88);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+
+/** 按钮样式重置 */
+
+.el-button--primary {
+  background-color: #00a76f !important;
+}
+
+.el-button--primary.is-plain {
+  background-color: rgba($color: #00a76f, $alpha: 0.1) !important;
+  color: #00a76f !important;
+
+  &:hover {
+    background-color: #00a76f !important;
+    color: white !important;
+    border: 1px solid #00a76f !important;
+  }
+}
+
+.el-tag.el-tag--primary.el-tag--small.el-tag--light.remark {
+  background-color: rgba($color: #00a76f, $alpha: 0.1) !important;
+  color: #00a76f !important;
+}
+
+.is-active.number {
+  background-color: #00a76f !important;
+}
+
+.el-tag.el-tag--success.el-tag--light {
+  background-color: rgba($color: #00a76f, $alpha: 0.1) !important;
+  color: #00a76f !important;
+}
+
+.toastui-editor-defaultUI-toolbar .scroll-sync.active::before {
+  color: #00a76f !important;
+}
+
+.toastui-editor-defaultUI-toolbar input:checked+.switch {
+  background-color: rgba($color: #00a76f, $alpha: 0.3) !important;
+}
+
+.toastui-editor-defaultUI-toolbar input:checked+.switch::before {
+  background-color: #00a76f !important;
+}
+
+.el-tag.el-tag--primary {
+  --el-tag-text-color: #00a76f !important;
+}
+
+:deep(.el-descriptions__content:not(.is-bordered-label)) {
+  cursor: pointer;
+  color: #25cfe6;
+  text-decoration: line-through;
+}
+
+.el-dropdown-menu__item:not(.is-disabled):focus {
+  background-color: rgba($color: #00a76f, $alpha: 0.1) !important;
+  color: #00a76f !important;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #00a76f !important;
+  border-color: #00a76f !important;
+}
+
+.el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 1px #00a76f inset !important;
+}
