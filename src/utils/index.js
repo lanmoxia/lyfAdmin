@@ -1,5 +1,6 @@
 import store from '@/store'
 import {
+  ACCESS_TOKEN,
   VERSION,
   MODEL_TEST_VERSION,
   SERVER_TYPE,
@@ -10,6 +11,7 @@ import {
   DEV_URL
 } from '@/constant'
 
+import {getItem} from '@/utils/storage'
 
 
 // 将字符串的字符全部转换为小写字符
@@ -45,8 +47,9 @@ export function exportDataFormatUrl(request_url, request_params, is_new) {
 
 
   let params = JSON.parse(JSON.stringify(request_params));
-  if (store.getters.token) {
-    params.sys_token = store.getters.token
+
+  if (getItem(ACCESS_TOKEN)) {
+    params[ACCESS_TOKEN] = getItem(ACCESS_TOKEN)
   }
   let data = "?";
   for (let key in params) {

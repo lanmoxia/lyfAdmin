@@ -64,7 +64,7 @@ export var publicRoutes = [
  */
 export function resetRouter() {
     if (store.getters.hasRoles) {
-        console.log('store.getters.roles', store.getters.roles)
+        // console.log('store.getters.roles', store.getters.roles)
         const menus = store.getters.roles
         //removeRoute是根据路由的name去删除路由的，所以我们要对路由的名字进行截取
         // const menus = ['getRoleList','admintorList','adminAuth']

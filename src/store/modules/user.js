@@ -1,6 +1,6 @@
-import { login, getPermission } from '@/api'
+import { login, getPermission} from '@/api'
 import { setItem, getItem, removeAllItem } from '@/utils/storage'
-import { TOKEN, USERINFO } from '@/constant'
+import { ACCESS_TOKEN,REFRESH_TOKEN,USERINFO } from '@/constant'
 import { setTimeStamp } from '@/utils/auth'
 import { formatPermissionList } from '@/utils/index'
 import router, { resetRouter } from '@/router'
@@ -10,15 +10,20 @@ import { ElMessage } from "element-plus"
 export default {
     namespaced: true,
     state: () => ({
-        token: getItem(TOKEN) || '',
+        accessToken: getItem(ACCESS_TOKEN) || '',
+        refreshToken: getItem(REFRESH_TOKEN) || '',
         userInfo: getItem(USERINFO) || {},
         roles: [],
         buttons: []
     }),
     mutations: {
-        setToken(state, token) {
+        setAccessToken(state, token) {
             state.token = token
-            setItem(TOKEN, token)
+            setItem(ACCESS_TOKEN, token)
+        },
+        setRefreshToken(state, token) {
+            state.token = token
+            setItem(REFRESH_TOKEN, token)
         },
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo
@@ -30,7 +35,7 @@ export default {
         },
         setButtons: (state, buttons) => {
             state.buttons = buttons
-        },
+        }
     },
     actions: {
 
@@ -44,8 +49,8 @@ export default {
                     code_key,
                 })
                     .then(data => {
-                        console.log('data', data)
-                        this.commit('user/setToken', data.obj.sys_token)
+                        this.commit('user/setAccessToken', data.accessToken)
+                        this.commit('user/setRefreshToken', data.refreshToken)
                         this.commit('user/setUserInfo', data.obj)
                         // 保存登录时间
                         setTimeStamp()
@@ -82,7 +87,8 @@ export default {
         },
         logout() {
             resetRouter()
-            this.commit('user/setToken', '')
+            this.commit('user/setAccessToken', '')
+            this.commit('user/setRefreshToken', '')
             this.commit('user/setUserInfo', {})
             this.commit('user/setRoles', [])
             this.commit('user/setButtons', [])
@@ -90,7 +96,7 @@ export default {
                 type: 'all'
             })
             removeAllItem()
-            router.push('/login')
+            router.push('/login')          
         }
     }
 }

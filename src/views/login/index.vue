@@ -1,8 +1,6 @@
 <template>
   <div class="loginWrapper">
 
-    <div class="loginContainer">
-
       <!-- 左侧海报 -->
       <div class="loginBanner">
 
@@ -42,23 +40,26 @@
         <el-form ref="loginFromRef" style="max-width: 600px" :model="loginForm" :rules="loginRules">
 
           <el-form-item prop="username">
-            <el-input size="large" style="width: 100%; border-radius: 8px;" v-model="loginForm.username" name="username"
+            <el-input trim size="large" style="width: 100%; border-radius: 8px;" v-model="loginForm.username" name="username"
               placeholder="账号" type="text"  @keyup.enter.native="handleLogin"/>
           </el-form-item>
 
           <el-form-item prop="password" label-suffix>
-            <el-input  size="large" style="width: 100%; border-radius: 8px;" v-model="loginForm.password" name="password"
+            <el-input trim size="large" style="width: 100%; border-radius: 8px;" v-model="loginForm.password" name="password"
               placeholder="密码" :type="passwordType" @keyup.enter.native="handleLogin"/>
               <span class="showPassword">
                 <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'" @click="onChangePwdType" />
               </span>
           </el-form-item>
 
-          <el-form-item class="code-box" prop="captcha_code">
-            <el-input size="large" style="width: 100%; border-radius: 8px;" placeholder="图形验证码" v-model="loginForm.captcha_code"
-              name="captcha_code" class="code-input" maxlength="4" @keyup.enter.native="handleLogin">
-            </el-input>
-            <div class="code-img" @click="getCodeImg" v-html="coloredCode"></div>
+          <el-form-item trim prop="captcha_code">
+            <div class="code-box">
+              <el-input size="large" style="width: 100%; border-radius: 8px;" placeholder="图形验证码" v-model="loginForm.captcha_code"
+                name="captcha_code" class="code-input" maxlength="6" @keyup.enter.native="handleLogin">
+              </el-input>
+              <div class="code-img" @click="getCodeImg" v-html="coloredCode"></div>
+            </div>
+            
           </el-form-item>
           
           <div class="rememberMe">
@@ -94,8 +95,6 @@
 
       </div>
       </div>
-
-    </div>
    
   </div>
 </template>
@@ -103,12 +102,11 @@
 
 <script setup>
 import { reactive, ref, onMounted, computed} from 'vue'
-import { ElMessage } from "element-plus"
 import { validatePassword, validateCode } from './rules'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import {getCode} from '@/api'
-
+import {ElMessage } from 'element-plus'
 const code_net = ref('')
 
 onMounted(() => {
@@ -182,7 +180,7 @@ const randomColor = () => {
  * 登录
  */
  const handleLogin = () => {
-  loginFromRef.value.validate(valid => {
+  loginFromRef.value.validate (valid => {
     if (!valid) return
     // if (loginForm.captcha_code != code_net.value) {
     //   ElMessage.error("验证码错误！")
@@ -190,11 +188,9 @@ const randomColor = () => {
     // }
     loading.value = true
     store.dispatch('user/login', loginForm)
-      .then(() => {
-        setTimeout(() => {
+      .then(() => { 
           loading.value = false    
           router.push('/')
-        }, 500)
       })
       .catch(async err => {
         getCodeImg()
@@ -206,16 +202,14 @@ const randomColor = () => {
 /**
  * 获取图形验证码
  */
- const getCodeImg = () => {
-  getCode({})
-    .then(data => {
-      let obj = data.obj
-      loginForm.code_key = obj.code_key
-      code_net.value = obj.code
-    })
-    .catch(err => {
-      console.log(err)
-    })
+ const getCodeImg = async () => {
+  try{
+    const data = await getCode()
+    let obj = data.obj
+    code_net.value = obj.code
+  }catch(error){
+    throw error
+  }
  }
 </script>
 
@@ -223,11 +217,11 @@ const randomColor = () => {
 @import '@/styles/mixin.scss';
 @import '@/styles/element.scss';
 .loginWrapper {
+  display: flex;
   background-color: #f5f5f5;
-
-  .loginContainer {
-    display: flex;
-
+  width: 100%;
+  height: 100%;
+  overflow: auto;
     .loginBanner {
       flex-grow: 1; 
       background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(../../assets/blurred-bg.jpg);
@@ -244,7 +238,7 @@ const randomColor = () => {
     .loginContent {
       flex-shrink: 1; 
       flex-basis: auto;
-      margin: 70px 0 20px 0;
+      margin: 70px 0;
       padding: 0 60px;
       >h2{margin-bottom: 16px;}
 
@@ -282,15 +276,20 @@ const randomColor = () => {
           user-select: none;
         }
         .code-box {
+          flex: 1;
+          display: flex;
+          align-items: center;
           position: relative;
           .code-img{
             position: absolute;
-            width: 60px;
-            right: 0;
-            top: 6px;
-            font-size: 22px;
+            right: 10px;
+            top: 0;
+            line-height: 38px;
+            font-size: 20px;
+            font-weight: bold;
             background: transparent;
             cursor: pointer;
+            transform: rotate(-3deg);
           }
         }
         .rememberMe {
@@ -345,7 +344,6 @@ const randomColor = () => {
         max-width: 480px; 
       }
     }
-  }
   }
 }
 </style>

@@ -4,7 +4,8 @@ import variables from '@/styles/variables.module.scss'
 
 const getters = {
 
-  token: state => state.user.token,
+  accessToken: state => state.user.accessToken,
+  refreshToken: state => state.user.refreshToken,
   userInfo: state => state.user.userInfo,
   cssVar: state => variables,
   sidebarOpened: state => state.app.sidebarOpened,

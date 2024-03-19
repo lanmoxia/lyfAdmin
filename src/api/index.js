@@ -5,31 +5,42 @@ import axios from '@/utils/axios'
  */
 export function login(params) {
   return axios({
-    url: '/Index/login',
-    method: 'post',
-    data: params
-  })
-}
-/**
- * 获取图形验证码
- */
-export function getCode(params) {
-  return axios({
-    url: '/Index/getCaptchaCode',
+    url: '/user/login',
     method: 'post',
     data: params
   })
 }
 
 /**
+ * 获取图形验证码
+ */
+export function getCode() {
+  return axios({
+    url: '/captcha',
+    method: 'get'
+  })
+}
+
+/**
+ * 刷新 token
+ */
+export function requestRefreshToken(refreshToken){
+  return axios({
+    url: '/refresh',
+    method: 'get',
+    headers: { 'pass': refreshToken }
+  })
+}
+
+
+/**
  * 权限列表（侧边栏权限和按钮权限）
  * @param params
  */
-export function getPermission(params) {
+export function getPermission() {
   return axios({
-    url: '/Index/getPermission',
-    method: 'post',
-    data: params
+    url: '/permission/list',
+    method: 'get'
   })
 }
 
@@ -37,11 +48,10 @@ export function getPermission(params) {
  * 账号列表
  * @param params
  */
-export function getAdmintorList(params) {
+export function getAdmintorList() {
   return axios({
-    url: '/adminAuth/adminList',
-    method: 'post',
-    data: params
+    url: '/user/getList',
+    method: 'get'
   })
 }
 
@@ -49,11 +59,10 @@ export function getAdmintorList(params) {
  * 角色列表
  * @param params
  */
-export function getRoleList(params) {
+export function getRoleList() {
   return axios({
-    url: '/adminAuth/getRoleList',
-    method: 'post',
-    data: params
+    url: '/role/list',
+    method: 'get'
   })
 }
 

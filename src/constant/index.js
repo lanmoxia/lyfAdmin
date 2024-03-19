@@ -15,7 +15,11 @@ export const VERSION = '10000'
 //接口测试版本号
 export const MODEL_TEST_VERSION = '666666'
 // token
-export const TOKEN = 'token'
+export const ACCESS_TOKEN = 'accessToken'
+export const REFRESH_TOKEN = 'refreshToken'
+// header 头部携带长短 token
+export const AUTH = 'authorization' 
+export const PASS = 'pass'
 //userInfo
 export const USERINFO = 'userInfo'
 // token 时间戳

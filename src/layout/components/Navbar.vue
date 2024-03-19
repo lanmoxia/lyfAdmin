@@ -20,7 +20,7 @@
 
         <div class="avatar-wrapper">
           <el-image class="avatar" :src="$store.getters.userInfo.avatar"></el-image>
-          <div>{{ $store.getters.userInfo.admin_nick_name }}</div>
+          <div>{{ $store.getters.userInfo.username }}</div>
           <CaretBottom style="width: 1em; height: 1em; margin-left: 4px;" />
         </div>
 

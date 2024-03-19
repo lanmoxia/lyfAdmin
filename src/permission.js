@@ -1,6 +1,7 @@
 import router from './router'
 import store from './store'
-
+import {ACCESS_TOKEN} from '@/constant'
+import {getItem} from '@/utils/storage'
 // 白名单
 const whiteList = ['/login']
 
@@ -22,7 +23,7 @@ function filterRoutesIcon(list1, list2) {
  * 路由前置守卫
  */
 router.beforeEach(async (to, from, next) => {
-  if (store.getters.token) {
+  if (getItem(ACCESS_TOKEN)) { // 这里不能在 store中取 还不存在
     if (to.path === '/login') {
       return next('/')
     } else {
@@ -48,4 +49,3 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 })
-

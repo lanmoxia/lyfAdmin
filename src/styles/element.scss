@@ -164,7 +164,7 @@
 :deep(.el-descriptions__content:not(.is-bordered-label)) {
   cursor: pointer;
   color: #25cfe6;
-  text-decoration: line-through;
+  // text-decoration: line-through;
 }
 
 .el-dropdown-menu__item:not(.is-disabled):focus {
