@@ -205,8 +205,7 @@ const randomColor = () => {
  const getCodeImg = async () => {
   try{
     const data = await getCode()
-    let obj = data.obj
-    code_net.value = obj.code
+    code_net.value = data.code
   }catch(error){
     throw error
   }

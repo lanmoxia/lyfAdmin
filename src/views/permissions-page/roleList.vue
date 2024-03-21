@@ -63,8 +63,6 @@ import DistributePermission from './components/distributePermission.vue'
 
 import { ref, onMounted, reactive } from "vue";
 import { getRoleList } from "@/api";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 
 const showSearch = ref(true);
@@ -89,14 +87,16 @@ const loading = ref(false)
  * 获取角色列表
  */
 const getListData = async () => {
+  console.log('开启')
   loading.value = true
 
   await getRoleList(searchForm.value)
     .then(data => {
       setTimeout(() => {
-        tableData.value = data.obj
+        tableData.value = data.data
         total.value = Number(data.page_info.total_items);
         loading.value = false
+        console.log('关闭')
       }, 1000)
     })
     .catch(err => {

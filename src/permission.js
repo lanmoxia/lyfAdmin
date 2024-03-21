@@ -17,7 +17,6 @@ function filterRoutesIcon(list1, list2) {
       filterRoutesIcon(item1.children, list2)
     }
   })
-
 }
 /**
  * 路由前置守卫
@@ -31,7 +30,6 @@ router.beforeEach(async (to, from, next) => {
         const { roles } = await store.dispatch('user/getPermissionData')
         const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
         filterRoutesIcon(accessRoutes, roles)
-
 
         accessRoutes.forEach(item => {
           router.addRoute(item)

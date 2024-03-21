@@ -180,3 +180,14 @@
 .el-select__wrapper.is-focused {
   box-shadow: 0 0 0 1px #00a76f inset !important;
 }
+
+.el-loading-spinner .path {
+  stroke: #00a76f !important;
+}
+.el-loading-spinner .el-loading-text {
+  color: #00a76f !important;
+}
+
+.el-progress-bar__outer {
+  background-color: transparent !important;
+}

@@ -33,8 +33,7 @@ const emits = defineEmits(['update:modelValue'])
 const allPermission = ref([])
 const getPermissionList = async () => {
   const data = await getPermission()
-
-  allPermission.value = data.obj
+  allPermission.value = data.data
 
 }
 getPermissionList()

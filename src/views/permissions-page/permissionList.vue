@@ -101,7 +101,7 @@ import {CopyDocument} from '@element-plus/icons'
 const allPermission = ref([])
 const getPermissionListData = async () => {
   const data = await getPermission()
-  allPermission.value = data.obj
+  allPermission.value = data.data
 }
 getPermissionListData()
 /** 复制代码成功 */

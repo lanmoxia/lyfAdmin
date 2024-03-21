@@ -1,4 +1,4 @@
-import { login, getPermission} from '@/api'
+import { userLogin, getPermission} from '@/api'
 import { setItem, getItem, removeAllItem } from '@/utils/storage'
 import { ACCESS_TOKEN,REFRESH_TOKEN,USERINFO } from '@/constant'
 import { setTimeStamp } from '@/utils/auth'
@@ -14,7 +14,9 @@ export default {
         refreshToken: getItem(REFRESH_TOKEN) || '',
         userInfo: getItem(USERINFO) || {},
         roles: [],
-        buttons: []
+        buttons: [],
+        isProgress: true,
+        progressNum: 0
     }),
     mutations: {
         setAccessToken(state, token) {
@@ -35,23 +37,27 @@ export default {
         },
         setButtons: (state, buttons) => {
             state.buttons = buttons
+        },
+        setProgress: (state, isProgress) => {
+            state.isProgress = isProgress
+        },
+        setProgressNum: (state, progressNum) => {
+            state.progressNum = progressNum
         }
     },
     actions: {
-
         login(context, userInfo) {
-            const { username, password, captcha_code, code_key } = userInfo
+            const { username, password, captcha_code } = userInfo
             return new Promise((resolve, reject) => {
-                login({
+                userLogin({
                     username,
                     password,
-                    captcha_code,
-                    code_key,
+                    captcha_code
                 })
                     .then(data => {
                         this.commit('user/setAccessToken', data.accessToken)
                         this.commit('user/setRefreshToken', data.refreshToken)
-                        this.commit('user/setUserInfo', data.obj)
+                        this.commit('user/setUserInfo', data.info)
                         // 保存登录时间
                         setTimeStamp()
                         resolve()
@@ -61,23 +67,25 @@ export default {
                     })
             })
         },
-        getPermissionData(context) {
+        getPermissionData() {
             return new Promise((resolve, reject) => {
                 getPermission()
                     .then(data => {
-                        let obj = formatPermissionList(data.obj)
+                        this.commit('user/setProgressNum', 30);
+                        const dataSource = data.data
+                        let obj = formatPermissionList(dataSource)
                         let role_arr = obj.role_arr
                         let button_arr = obj.button_arr
                         let info = {
                             roles: role_arr
                         }
-
                         if (role_arr.length == 0) {
                             ElMessage.error("您登录的账号暂无权限！")
                             this.dispatch('user/logout')
                         }
                         this.commit('user/setRoles', role_arr)
                         this.commit('user/setButtons', button_arr)
+                        this.commit('user/setProgressNum', 50); 
                         resolve(info)
                     })
                     .catch(err => {

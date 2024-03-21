@@ -93,7 +93,7 @@ import RolesDialog from './components/roles.vue'
 import UploadExcel from '@/components/UploadExcel'
 
 import { ref, onMounted, watch, reactive } from "vue";
-import { getAdmintorList, getRoleList } from "@/api";
+import {getAdmintorList,getRoleList} from '@/api'
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -132,8 +132,9 @@ const getListData = async () => {
   loading.value = true
   await getAdmintorList(searchForm.value)
     .then(data => {
+      console.log('getAdmintorList',data)
       setTimeout(() => {
-        tableData.value = data.obj
+        tableData.value = data.data
         total.value = Number(data.page_info.total_items);
         loading.value = false
       }, 1000)
@@ -150,7 +151,7 @@ const getListData = async () => {
 const getRoleData = async () => {
   await getRoleList()
     .then(data => {
-      roleList.value = data.obj
+      roleList.value = data.data
 
     })
     .catch(err => {

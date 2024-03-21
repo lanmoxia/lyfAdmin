@@ -1,21 +1,32 @@
-import axios from '@/utils/axios'
+import useHttp from '@/api/useHttp'
 
 /**
- * 登录
+ * 注册
  */
-export function login(params) {
-  return axios({
-    url: '/user/login',
+export const userRegister = (params) => {
+  return useHttp({
+    url: '/user/register',
     method: 'post',
-    data: params
+    data: {...params}
   })
 }
 
 /**
- * 获取图形验证码
+ * 登录
  */
-export function getCode() {
-  return axios({
+export const userLogin = (params) => {
+  return useHttp({
+    url: '/user/login',
+    method: 'post',
+    data: {...params}
+  })
+}
+
+/**
+ * 获取验证码
+ */
+export const getCode = () => {
+  return useHttp({
     url: '/captcha',
     method: 'get'
   })
@@ -24,59 +35,52 @@ export function getCode() {
 /**
  * 刷新 token
  */
-export function requestRefreshToken(refreshToken){
-  return axios({
-    url: '/refresh',
-    method: 'get',
-    headers: { 'pass': refreshToken }
-  })
-}
-
+// export const requestRefreshToken = (refreshToken) => {
+//   return useHttp({
+//     url: '/refresh',
+//     method: 'get',
+//     headers: { 'pass': refreshToken }
+//   })
+// }
 
 /**
- * 权限列表（侧边栏权限和按钮权限）
- * @param params
+ * 获取权限列表
  */
-export function getPermission() {
-  return axios({
+export const getPermission = () => {
+  return useHttp({
     url: '/permission/list',
     method: 'get'
   })
 }
 
 /**
- * 账号列表
- * @param params
+ * 获取用户列表
  */
-export function getAdmintorList() {
-  return axios({
+export const getAdmintorList = (params) =>{
+  return useHttp({
     url: '/user/getList',
-    method: 'get'
+    method: 'post',
+    data: {...params}
   })
 }
 
 /**
- * 角色列表
- * @param params
+ * 获取角色
  */
-export function getRoleList() {
-  return axios({
+export const getRoleList = () => {
+  return useHttp({
     url: '/role/list',
     method: 'get'
   })
 }
 
-
-
-//上传图片
-export function publicUploadFile(params) {
-  return axios({
+/**
+ * 上传图片
+ */
+export const publicUploadFile = (params) => {
+  return useHttp({
     url: '/public/uploadFile',
     method: 'post',
-    data: params
+    data: {...params}
   })
 }
-
-
-
-

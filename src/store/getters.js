@@ -3,7 +3,6 @@
 import variables from '@/styles/variables.module.scss'
 
 const getters = {
-
   accessToken: state => state.user.accessToken,
   refreshToken: state => state.user.refreshToken,
   userInfo: state => state.user.userInfo,
@@ -15,6 +14,7 @@ const getters = {
   hasRoles: state => {
     return state.user.roles&&state.user.roles.length>0
   },
-
+  isProgress: state => state.user.isProgress,
+  progressNum: state => state.user.progressNum
 }
 export default getters
