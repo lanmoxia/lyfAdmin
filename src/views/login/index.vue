@@ -37,7 +37,6 @@
       </div>
       <!-- 登录表单 -->
       <div v-if="loginOrRegister" class="loginFrom">
-        
         <el-form ref="loginFromRef" style="max-width: 600px" :model="loginForm " :rules="loginRules">
           <!-- 输入账号 -->
           <el-form-item prop="username">
@@ -65,7 +64,7 @@
           <!-- 记住密码 -->
           <div class="rememberMe">
             <el-form-item>
-            <el-checkbox v-model="loginForm.isRememberMe">记住我</el-checkbox>
+            <el-checkbox  v-model="checked" @change="checkChange">记住我</el-checkbox>
             </el-form-item>
             <el-form-item>
               <a href="">忘记密码?</a>
@@ -100,7 +99,6 @@
 
       <!-- 注册表单 -->
       <div v-else class="registerFrom">
-        
         <el-form ref="registerFromRef" style="max-width: 600px" :model="registerForm " :rules="registerRules">
           <!-- 输入账号 -->
           <el-form-item prop="username">
@@ -176,15 +174,29 @@ import md5 from 'js-md5';
 // import { encryptPassword } from '@/utils/encryption';
 // import { pemToCryptoKey,arrayBufferToBase64 } from '@/utils/crypto';
 
+const checked = ref(true)
 const code_net = ref('')
 // const publicKey = ref(null)
 const loginOrRegister = ref(true)
 
-onMounted(() => {
-  getCodeImg()
+onMounted(async () => {
+  await getCodeImg()
+  checkChange(checked.value);
   // getPublicKey()
 })
 
+// 填充账号密码
+const checkChange = (bool) => {
+  if(bool){
+    loginForm.username = 'admin@gmail.com'
+    loginForm.password = 'demo1234' 
+    loginForm.captcha_code = code_net.value 
+  }else {
+    loginForm.username = ''
+    loginForm.password = ''
+    loginForm.captcha_code = ''
+  }
+}
 /**
  * 去注册页
  */
@@ -203,8 +215,8 @@ const goBack = () => {
 
 // 登录表单数据
 const loginForm = reactive({
-  username: "admin@gmail.com",
-  password: "demo1234",
+  username: '',
+  password: '',
   captcha_code: ''
 })
 
