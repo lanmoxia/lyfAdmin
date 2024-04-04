@@ -132,7 +132,6 @@ const getListData = async () => {
   loading.value = true
   await getAdmintorList(searchForm.value)
     .then(data => {
-      console.log('getAdmintorList',data)
       setTimeout(() => {
         tableData.value = data.data
         total.value = Number(data.page_info.total_items);

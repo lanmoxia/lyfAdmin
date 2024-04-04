@@ -22,12 +22,35 @@ export const userLogin = (params) => {
   })
 }
 
+
+/**
+ * 用户更新
+ */
+export const userAvatarUpdate = (formData) => {
+ return useHttp({
+  url: "/user/updateAvatar",
+  method: 'POST',
+  data: formData
+ })
+}
+
+
 /**
  * 获取验证码
  */
 export const getCode = () => {
   return useHttp({
     url: '/captcha',
+    method: 'get'
+  })
+}
+
+/**
+ * 获取公钥
+ */
+export const getKey = () => {
+  return useHttp({
+    url: '/publickey',
     method: 'get'
   })
 }
@@ -59,7 +82,7 @@ export const getPermission = () => {
 export const getAdmintorList = (params) =>{
   return useHttp({
     url: '/user/getList',
-    method: 'post',
+    method: 'get',
     data: {...params}
   })
 }

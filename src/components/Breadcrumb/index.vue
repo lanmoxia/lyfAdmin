@@ -41,7 +41,6 @@ watch(
 // 处理点击事件
 const router = useRouter()
 const onLinkClick = item => {
-  console.log(item)
   router.push(item.path)
 }
 // 如果将来需要进行主题替换，所以这里获取下动态样式

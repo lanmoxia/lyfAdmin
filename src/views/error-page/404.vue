@@ -19,7 +19,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
 const router = useRouter()
-console.log(router)
 const goHome = () => {
   router.replace('/home')
 }

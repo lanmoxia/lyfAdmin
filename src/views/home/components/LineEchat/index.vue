@@ -45,11 +45,11 @@ import {lineOptions} from '../../options'
       echarts.dispose(chartDom)
     }
     let myChart = echarts.init(chartDom)
-    myChart.setOption(lineOptions)
+    myChart.setOption(lineOptions) // 47 行
   }
-  watchEffect(() => {
-    nextTick(() => {
-      initChart()
+watchEffect(() => {
+  nextTick(() => {
+    initChart()
   })
 })
 </script>

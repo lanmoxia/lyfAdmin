@@ -4,7 +4,7 @@
 
 <script setup>
   import * as echarts from 'echarts'
-  import { onMounted, nextTick} from 'vue'
+  import { onMounted, nextTick,watchEffect} from 'vue'
   import {pieOptions} from '../../options'
 
   onMounted(() => {

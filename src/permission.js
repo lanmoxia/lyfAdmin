@@ -2,6 +2,8 @@ import router from './router'
 import store from './store'
 import {ACCESS_TOKEN} from '@/constant'
 import {getItem} from '@/utils/storage'
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
 // 白名单
 const whiteList = ['/login']
 
@@ -37,6 +39,7 @@ router.beforeEach(async (to, from, next) => {
 
         return next({ ...to, replace: true })
       }
+      nprogress.start()
       next()
     }
   } else {
@@ -46,4 +49,12 @@ router.beforeEach(async (to, from, next) => {
       next('/login')
     }
   }
+})
+
+/**
+ * 后置守卫
+ */
+
+router.afterEach((to,from) => {
+  nprogress.done()
 })

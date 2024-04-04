@@ -15,6 +15,7 @@ const getters = {
     return state.user.roles&&state.user.roles.length>0
   },
   isProgress: state => state.user.isProgress,
-  progressNum: state => state.user.progressNum
+  progressNum: state => state.user.progressNum,
+  isLoading: state => state.user.isLoading
 }
 export default getters

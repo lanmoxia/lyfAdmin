@@ -58,7 +58,6 @@ export function exportDataFormatUrl(request_url, request_params, is_new) {
 
   url = url + data
 
-  // console.log(url)
 
   if (is_new) {
     //打开新窗口

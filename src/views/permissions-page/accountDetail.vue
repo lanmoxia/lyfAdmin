@@ -91,7 +91,6 @@ watch(
   val => {
     if (val) {
       userInfo.value = route.query
-      // console.log("watch= ",route.query)
     }
   },  //第一次进来也触发
   {

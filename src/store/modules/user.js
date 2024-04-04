@@ -15,22 +15,20 @@ export default {
         userInfo: getItem(USERINFO) || {},
         roles: [],
         buttons: [],
-        isProgress: true,
-        progressNum: 0
+        isLoading: false
     }),
     mutations: {
         setAccessToken(state, token) {
-            state.token = token
+            state.accessToken = token
             setItem(ACCESS_TOKEN, token)
         },
         setRefreshToken(state, token) {
-            state.token = token
+            state.refreshToken = token
             setItem(REFRESH_TOKEN, token)
         },
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo
             setItem(USERINFO, userInfo)
-
         },
         setRoles: (state, roles) => {
             state.roles = roles
@@ -38,11 +36,8 @@ export default {
         setButtons: (state, buttons) => {
             state.buttons = buttons
         },
-        setProgress: (state, isProgress) => {
-            state.isProgress = isProgress
-        },
-        setProgressNum: (state, progressNum) => {
-            state.progressNum = progressNum
+        setLoadingState: (state,boolean) => {
+            state.isLoading = boolean
         }
     },
     actions: {
@@ -71,7 +66,6 @@ export default {
             return new Promise((resolve, reject) => {
                 getPermission()
                     .then(data => {
-                        this.commit('user/setProgressNum', 30);
                         const dataSource = data.data
                         let obj = formatPermissionList(dataSource)
                         let role_arr = obj.role_arr
@@ -85,7 +79,6 @@ export default {
                         }
                         this.commit('user/setRoles', role_arr)
                         this.commit('user/setButtons', button_arr)
-                        this.commit('user/setProgressNum', 50); 
                         resolve(info)
                     })
                     .catch(err => {
@@ -105,6 +98,13 @@ export default {
             })
             removeAllItem()
             router.push('/login')          
+        },
+        updateUserInfo({state},avatar){
+          const updatedUserInfo = { ...state.userInfo, avatar}
+          this.commit('user/setUserInfo', updatedUserInfo)
+        },
+        setLoginState(boolean){
+            this.commit('user/setLoginState', boolean)
         }
     }
 }

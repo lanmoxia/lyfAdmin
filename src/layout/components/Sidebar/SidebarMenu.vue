@@ -19,7 +19,6 @@ const routes = computed(() => {
   const filterRoutes = filterRouters(router.getRoutes()); // router.getRoutes() 当前路由实例中所有路由数组
   return generateMenus(filterRoutes);
 });
-// console.log("routes111==",routes)
 // 计算高亮 menu 的方法
 const route = useRoute();
 const activeMenu = computed(() => {

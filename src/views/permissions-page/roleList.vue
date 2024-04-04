@@ -87,7 +87,6 @@ const loading = ref(false)
  * 获取角色列表
  */
 const getListData = async () => {
-  console.log('开启')
   loading.value = true
 
   await getRoleList(searchForm.value)
@@ -96,7 +95,6 @@ const getListData = async () => {
         tableData.value = data.data
         total.value = Number(data.page_info.total_items);
         loading.value = false
-        console.log('关闭')
       }, 1000)
     })
     .catch(err => {

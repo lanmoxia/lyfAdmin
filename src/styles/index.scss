@@ -7,7 +7,9 @@
 html {
   box-sizing: border-box;
 }
-
+#app {
+  height: 100vh;
+}
 // 清除标签默认间距
 html,
 body,
@@ -145,13 +147,6 @@ td {
   vertical-align: middle;
 }
 
-
-
-#app {
-  // height: 100%;
-  width: 100vw;
-  height: 100vh;
-}
 
 *,
 *:before,

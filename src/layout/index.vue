@@ -1,8 +1,5 @@
 <template>
   <div class="app-wrapper" :class="[$store.getters.sidebarOpened ? 'openSidebar' : 'hideSidebar']">
-    <div v-if="store.getters.isProgress" class="progress">
-      <el-progress color="#00a76f" :duration="3" :show-text="false" :percentage="store.getters.progressNum" :stroke-width="3" indeterminate />
-    </div>
     
     <!-- 左侧 menu -->
     <sidebar id="guide-sidebar" class="sidebar-container" :style="{ backgroundColor: variables.menuBg }" />
@@ -28,21 +25,6 @@ import Sidebar from './components/Sidebar'
 import AppMain from './components/AppMain'
 import variables from '@/styles/variables.module.scss'
 import TagsView from '@/components/TagsView'
-import store from '@/store'
-import {nextTick, onMounted} from 'vue'
-
-onMounted(() => {
-  console.log(2)
-  store.commit('user/setProgressNum', 80)
-  nextTick(() => {
-    console.log(1)
-    setTimeout(() => {
-      console.log(3)
-      store.commit('user/setProgressNum', 100)
-      store.commit('user/setProgress', false)
-    },500)
-  })
-})
 </script>
 
 <style lang="scss" scoped>
