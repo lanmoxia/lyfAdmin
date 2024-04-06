@@ -36,7 +36,7 @@
         <el-form-item trim prop="captcha_code">
           <div class="code-box">
             <el-input size="large" style="width: 100%; border-radius: 8px;" placeholder="验证码" v-model="loginForm.captcha_code"
-              name="captcha_code" class="code-input" maxlength="6" @keyup.enter.native="handleLogin">
+              name="captcha_code" class="code-input" maxlength="2" @keyup.enter.native="handleLogin">
             </el-input>
             <div class="code-img" @click="getCodeImg" v-html="coloredCode"></div>
           </div>
@@ -192,6 +192,7 @@ const randomColor = () => {
   try{
     const data = await getCode()
     code_net.value = data.code
+    loginForm.captcha_code = code_net.value 
   }catch(error){
     throw error
   }
