@@ -199,3 +199,9 @@
 .el-checkbox__input.is-checked+.el-checkbox__label {
   color: #00a76f !important;
 }
+.el-input__wrapper {
+  border-radius: 8px !important;
+}
+.el-input {
+  --el-input-focus-border-color: #00a76f !important;
+}

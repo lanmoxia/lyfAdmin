@@ -22,6 +22,16 @@ export const userLogin = (params) => {
   })
 }
 
+/**
+ * 手机登录
+ */
+export const mobileLogin = (params) => {
+  return useHttp({
+    url: '/user/mobile_login',
+    method: 'post',
+    data: {...params}
+  })
+}
 
 /**
  * 用户更新
@@ -42,6 +52,17 @@ export const getCode = () => {
   return useHttp({
     url: '/captcha',
     method: 'get'
+  })
+}
+
+/**
+ * 获取短信验证码
+ */
+export const getSmsCode = (params) => {
+  return useHttp({
+    url: '/verify_code',
+    method: 'post',
+    data: {...params}
   })
 }
 

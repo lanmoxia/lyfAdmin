@@ -1,4 +1,4 @@
-import { userLogin, getPermission} from '@/api'
+import { userLogin, getPermission,mobileLogin} from '@/api'
 import { setItem, getItem, removeAllItem } from '@/utils/storage'
 import { ACCESS_TOKEN,REFRESH_TOKEN,USERINFO } from '@/constant'
 import { setTimeStamp } from '@/utils/auth'
@@ -10,12 +10,13 @@ import { ElMessage } from "element-plus"
 export default {
     namespaced: true,
     state: () => ({
-        accessToken: getItem(ACCESS_TOKEN) || '',
-        refreshToken: getItem(REFRESH_TOKEN) || '',
-        userInfo: getItem(USERINFO) || {},
-        roles: [],
-        buttons: [],
-        isLoading: false
+      accessToken: getItem(ACCESS_TOKEN) || '',
+      refreshToken: getItem(REFRESH_TOKEN) || '',
+      userInfo: getItem(USERINFO) || {},
+      roles: [],
+      buttons: [],
+      isLoading: false,
+      activeState: "login"
     }),
     mutations: {
         setAccessToken(state, token) {
@@ -27,17 +28,20 @@ export default {
             setItem(REFRESH_TOKEN, token)
         },
         setUserInfo(state, userInfo) {
-            state.userInfo = userInfo
-            setItem(USERINFO, userInfo)
+          state.userInfo = userInfo
+          setItem(USERINFO, userInfo)
         },
         setRoles: (state, roles) => {
-            state.roles = roles
+          state.roles = roles
         },
         setButtons: (state, buttons) => {
-            state.buttons = buttons
+          state.buttons = buttons
         },
-        setLoadingState: (state,boolean) => {
-            state.isLoading = boolean
+        setLoadingState: (state,bool) => {
+          state.isLoading = bool
+        },
+        setActiveState: (state,str) => {
+          state.activeState = str
         }
     },
     actions: {
@@ -61,6 +65,26 @@ export default {
                         reject(err)
                     })
             })
+        },
+        mobileLogin(context,userInfo){
+          const { mobile, sms_code} = userInfo
+          return new Promise((resolve, reject) => {
+            mobileLogin({
+                  mobile,
+                  sms_code
+              })
+                  .then(data => {
+                      this.commit('user/setAccessToken', data.accessToken)
+                      this.commit('user/setRefreshToken', data.refreshToken)
+                      this.commit('user/setUserInfo', data.info)
+                      // 保存登录时间
+                      setTimeStamp()
+                      resolve()
+                  })
+                  .catch(err => {
+                      reject(err)
+                  })
+          })
         },
         getPermissionData() {
             return new Promise((resolve, reject) => {
@@ -102,9 +126,6 @@ export default {
         updateUserInfo({state},avatar){
           const updatedUserInfo = { ...state.userInfo, avatar}
           this.commit('user/setUserInfo', updatedUserInfo)
-        },
-        setLoginState(boolean){
-            this.commit('user/setLoginState', boolean)
         }
     }
 }

@@ -16,6 +16,7 @@ const getters = {
   },
   isProgress: state => state.user.isProgress,
   progressNum: state => state.user.progressNum,
-  isLoading: state => state.user.isLoading
+  isLoading: state => state.user.isLoading,
+  activeState: state => state.user.activeState
 }
 export default getters

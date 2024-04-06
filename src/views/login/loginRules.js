@@ -22,3 +22,27 @@ export const validateCode = () => {
     }
   }
 }
+
+export const validateMobile = () => {
+  return (rule, value, callback) => {
+    if (value.length === 0) {
+      callback(new Error('请输入手机号'))
+    } else if(!/^1[3-9]\d{9}$/.test(value)) {
+      callback(new Error('手机号码格式不正确'));
+    }else {
+      callback()
+    }
+  }
+}
+
+export const validateSms_code = () => {
+  return (rule, value, callback) => {
+    if (value.length === 0) {
+      callback(new Error('请输入验证码'))
+    } else if(value.length !== 6) {
+      callback(new Error('短信验证码格式不正确'));
+    }else {
+      callback()
+    }
+  }
+}
