@@ -17,25 +17,25 @@ export default {
       path: '/vueUse/elements',
       redirect: '/elements/useDraggable',
       name: 'elements',
-      meta: {title: 'elements', icon: 'example'},
+      meta: {title: 'elements'},
       children: [
         {
           path: '/elements/useDraggable',
           component: () => import('@/views/vue-use/elements/useDraggable.vue'),
           name: 'useDraggable',
-          meta: {title: 'useDraggable', icon: 'star'}
+          meta: {title: 'useDraggable'}
         },
         {
           path: '/elements/useDropZone',
           component: () => import('@/views/vue-use/elements/useDropZone.vue'),
           name: 'useDropZone',
-          meta: {title: 'useDropZone', icon: 'star'}
+          meta: {title: 'useDropZone'}
         },
         {
           path: '/elements/useIntersectionObserver',
           component: () => import('@/views/vue-use/elements/useIntersectionObserver.vue'),
           name: 'useIntersectionObserver',
-          meta: {title: 'useIntersectionO', icon: 'star'}
+          meta: {title: 'useIntersectionO'}
         },
       ]
     },
@@ -43,13 +43,13 @@ export default {
       path: '/vueUse/component',
       redirect: '/component/createReusableTemplate',
       name: 'component',
-      meta: {title: 'component', icon: 'example'},
+      meta: {title: 'component'},
       children: [
         {
           path: '/component/createReusableTemplate',
           component: () => import('@/views/vue-use/component/createReusableTemplate.vue'),
           name: 'createReusableTemplate',
-          meta: {title: 'createReusableT', icon: 'star'}
+          meta: {title: 'createReusableT'}
         },
 
 

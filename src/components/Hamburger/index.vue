@@ -1,6 +1,7 @@
 <template>
+  <!-- 侧栏隐藏关闭 -->
   <div class="hamburger-container" @click="toggleClick">
-    <svg-icon id="guide-hamburger" class="hamburger" :icon="icon" />
+    <svg-icon id="guide-hamburger" class="hamburger" :icon="icon"/>
   </div>
 </template>
 

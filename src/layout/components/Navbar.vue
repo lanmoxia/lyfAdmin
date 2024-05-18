@@ -22,7 +22,7 @@
             class="avatar"
             :src="$store.getters.userInfo.avatar"
           ></el-image>
-          <div>{{ $store.getters.userInfo.username }}</div>
+          <div >{{ $store.getters.userInfo.username }}</div>
           <CaretBottom style="width: 1em; height: 1em; margin-left: 4px" />
         </div>
 
@@ -133,7 +133,7 @@ import Screenfull from "@/components/Screenfull";
 import Guide from "@/components/Guide";
 import HeaderSearch from "@/components/HeaderSearch";
 import { ElMessage } from "element-plus";
-import { userAvatarUpdate } from "@/api";
+import { api } from "@/api";
 
 const store = useStore();
 const loading = ref(false)
@@ -186,14 +186,14 @@ function beforeUpload(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      options.img = reader.result;
-    };
+      options.img = reader.result
+    }
   }
 }
 /** 上传图片 */
 function uploadImg() {
   loading.value = true
-  cropper.value.getCropBlob((blob) => {
+  cropper.value.getCropBlob(async (blob) => {
     if (!(blob instanceof Blob)) {
       // 如果不是Blob类型，创建一个Blob对象
       blob = new Blob([blob], { type: 'image/png' });
@@ -201,21 +201,20 @@ function uploadImg() {
     let formData = new FormData();
     formData.append("avatar", blob, 'avatar.png');
     formData.append("id", store.getters.userInfo.id);
-    userAvatarUpdate(formData).then((res) => {
-      open.value = false
+    const [err,res] = await api.userAvatarUpdate(formData)
+    open.value = false
+    loading.value = false    
+    options.img = res.data.avatar
+    console.log(options.img)
+    console.log(res.data.avatar)
+    if (res.data.avatar) {
+      store.dispatch('user/updateUserInfo', res.data.avatar);
+      ElMessage.success("修改成功");
+    } else {
       loading.value = false    
-      options.img = res.avatar;
-      console.log(options.img)
-      console.log(res.avatar)
-      if (res.avatar) {
-        store.dispatch('user/updateUserInfo', res.avatar);
-        ElMessage.success("修改成功");
-      } else {
-        loading.value = false    
-        ElMessage.error("头像更新失败，请重试。");
-      }
-      visible.value = false;
-    })
+      ElMessage.error("头像更新失败，请重试。");
+    }
+    visible.value = false;
   });
 }
 /** 实时预览 */
@@ -230,7 +229,7 @@ function closeDialog() {
 }
 
 const logout = () => {
-  store.dispatch("user/logout");
+  store.dispatch("user/logout")
 };
 </script>
 

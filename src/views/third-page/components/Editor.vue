@@ -11,7 +11,7 @@
 import E from 'wangeditor'
 import { onMounted, defineEmits, watch } from 'vue'
 import { useStore } from 'vuex'
-import { publicUploadFile } from "@/api";
+import { api } from "@/api";
 
 const props = defineProps({
   // title: {
@@ -87,7 +87,7 @@ const initEditor = () => {
       formData.append('file', item)
       // console.log("----模拟【图片上传接口】,真实数据需要填写constant.js里的接口域名------")
       // 图片上传接口
-      // publicUploadFile(formData)
+      // api.publicUploadFile(formData)
       //   .then(res => {
       //         insertImgFn(res.obj.src)
       //   })

@@ -8,8 +8,9 @@
         <svg-icon class="icon" icon="tipicon" />
       </div>  
       <el-descriptions :column="1">
+        <el-descriptions-item label="SupAdmin 账号:">supAdmin@gmail.com</el-descriptions-item>
         <el-descriptions-item label="Admin 账号:">admin@gmail.com</el-descriptions-item>
-        <el-descriptions-item label="Test 账号:">test@gmail.com</el-descriptions-item>
+        <el-descriptions-item label="User 账号:">user1@gmail.com</el-descriptions-item>
         <el-descriptions-item label="密码:">demo1234</el-descriptions-item>
       </el-descriptions>
 
@@ -64,11 +65,11 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted, computed} from 'vue'
+import { reactive, ref, onMounted, computed, watchEffect} from 'vue'
 import { validatePassword, validateCode} from '../../loginRules'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import {getCode} from '@/api'
+import {api} from '@/api'
 import {ElMessage } from 'element-plus'
 import md5 from 'js-md5';
 
@@ -83,7 +84,7 @@ onMounted(async () => {
 // 填充账号密码
 const checkChange = (checked) => {
   if(checked){
-    loginForm.username = 'admin@gmail.com'
+    loginForm.username = 'supAdmin@gmail.com'
     loginForm.password = 'demo1234' 
     loginForm.captcha_code = code_net.value 
   }else {
@@ -142,7 +143,6 @@ const onChangePwdType = () => {
 const loginFromRef = ref()
 const store = useStore()
 const router = useRouter()
-
 // 生成带有随机颜色的验证码字符
 const coloredCode = computed(() => {
   const colors = ['#9ec7fd', '#ea766d', '#a4da94', '#ff938b', '#1d2940']
@@ -157,31 +157,24 @@ const randomColor = () => {
  * 登录
  */
  const handleLogin = async () => {
-  loginFromRef.value.validate (valid => {
-    if (!valid) return
-    if (loginForm.captcha_code.toLowerCase() != code_net.value.toLowerCase()) {
-      getCodeImg()
-      ElMessage.error("验证码错误！")
-      store.commit('user/setLoadingState', false)
-      return;
-    }
+  loginFromRef.value.validate (async valid => {
     store.commit('user/setLoadingState', true)
-    const params = {
+    if (!valid) return  
+    if(loginForm.captcha_code.toLowerCase() !== code_net.value.toLowerCase()) {   
+      ElMessage.error("验证码错误！")
+      getCodeImg()
+      return
+    }  
+    const formData = {
       ...loginForm,
       password: md5(loginForm.password)
     }
-    store.commit('user/setLoadingState', true)
-    store.dispatch('user/login', params)
-      .then(() => { 
-        router.push('/')
-        setTimeout(() => {
-          store.commit('user/setLoadingState', false)  
-        },1000)        
-      })
-      .catch(async err => {
-        getCodeImg()
-        store.commit('user/setLoadingState', false)
-      })
+    
+    await store.dispatch('user/login', formData)
+    ElMessage.success('登录成功')
+    store.commit('user/setLoadingState', false) 
+    router.push('/')  
+    getCodeImg()
   })
 }
 
@@ -189,13 +182,9 @@ const randomColor = () => {
  * 获取图形验证码
  */
  const getCodeImg = async () => {
-  try{
-    const data = await getCode()
-    code_net.value = data.code
-    loginForm.captcha_code = code_net.value 
-  }catch(error){
-    throw error
-  }
+  const [err,res] = await api.getCode()
+  code_net.value = res.data.code
+  loginForm.captcha_code = code_net.value 
  }
 </script>
 

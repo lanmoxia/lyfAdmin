@@ -35,7 +35,7 @@ function isNull(data) {
   return false
 }
 /**
- * 根据 routes 数据，返回对应 menu 规则数组
+ * 生成菜单，根据 routes 数据，返回对应 menu 规则数组
  */
 export function generateMenus(routes, basePath = '') {
   const result = []

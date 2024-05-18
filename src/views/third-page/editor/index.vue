@@ -18,5 +18,4 @@ const onSuccess = () => {
 </script>
 
 <style lang="scss" scoped>
-.container {}
 </style>

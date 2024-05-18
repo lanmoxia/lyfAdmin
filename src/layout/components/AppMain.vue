@@ -3,7 +3,9 @@
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="cachedViews">
-          <component :is="Component" :key="route.name" />
+          <div v-if="Component">
+            <component :is="Component" :key="route.name" />
+          </div>
         </keep-alive>
       </transition>
     </router-view>
@@ -17,8 +19,10 @@ import { watch, computed, ref } from 'vue'
 import { isTags } from '@/utils/tags'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+
 const store = useStore()
 const route = useRoute()
+
 const cachedViews = computed(() => {
   return store.getters.tagsViewList.map((x) => x.name)
 })
@@ -44,7 +48,7 @@ const getTitle = route => {
 watch(
   route,
   (to, from) => {
-    if (!isTags(to.path)) return
+    if (!isTags(to.path)) return 
     const { fullPath, meta, name, params, path, query } = to
     store.commit('app/addTagsViewList', {
       fullPath,

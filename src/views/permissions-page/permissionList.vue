@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div v-loading="loading">
+    <!-- 权限列表组件 -->
     <el-row :gutter="20">
       <!--部门数据-->
       <el-col :span="4" :xs="24">
@@ -14,7 +15,7 @@
         </div>
         <div class="head-container">
           <el-tree
-              :data="allPermission"
+              :data="userMenus"
               :props="{ label: 'name', children: 'children' }"
               :expand-on-click-node="false"
               :filter-node-method="filterNode"
@@ -29,26 +30,29 @@
       <!--用户数据-->
       <el-col :span="20" :xs="24">
         <el-card>
+          
           <el-table
-              :data="allPermission"
+              :data="userMenus"
               style="width: 100%; margin-bottom: 20px"
-              row-key="id"
+              row-key="_id"
               border
               default-expand-all
               :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+
             <el-table-column
                 prop="name"
                 label="权限名称"
                 width="200">
             </el-table-column>
+
             <el-table-column
                 prop="url"
                 label="权限标志"
-                width="300">
+                width="400">
               <template #default="{ row }">
                 <div style="display: flex;align-items: center;justify-content: space-between;">
-                  <div>{{ row.url }}</div>
-                  <el-link :underline="false" :icon="CopyDocument" v-copyText="row.url"
+                  <div>{{ row.unique }}</div>
+                  <el-link :underline="false" :icon="CopyDocument" v-copyText="row.unique"
                            v-copyText:callback="copyTextSuccess" type="warning">复制
                   </el-link>
                 </div>
@@ -59,22 +63,10 @@
 
             <el-table-column
                 prop="hidden"
-                label="是否显示在菜单列表"
-                width="280">
+                label="是否显示在菜单列表">
               <template #default="{ row }">
-                <el-tag v-if="row.hidden" type="danger">否</el-tag>
-                <el-tag v-else type="success">是</el-tag>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="buttonList" label="所在页面的按钮权限" min-width="280">
-              <template #default="{ row }">
-                <el-tag
-                    class="remark"
-                    size="small"
-                    v-for="(item, index) in row.buttonList"
-                    :key="index">{{ item.name }}
-                </el-tag>
+                <el-tag v-if="row.hidden" type="danger">显示</el-tag>
+                <el-tag v-else type="success">隐藏</el-tag>
               </template>
             </el-table-column>
 
@@ -92,22 +84,27 @@ export default {
 }
 </script>
 <script setup>
-import {getPermission} from "@/api";
+import {api} from "@/api";
 import {ref,watch} from 'vue'
 import {ElMessage} from "element-plus";
 import {CopyDocument} from '@element-plus/icons'
+import { buildTree} from '@/utils/index'
 
-// 所有权限
-const allPermission = ref([])
+// 用户菜单权限
+const userMenus = ref([])
+const loading = ref(false)
+
+// 获取用户权限列表
 const getPermissionListData = async () => {
-  const data = await getPermission()
-  allPermission.value = data.data
+  loading.value = true
+  const [err,res] = await api.userPermissions()
+  userMenus.value = buildTree(res.data[0].menus)
+  loading.value = false
 }
 getPermissionListData()
 /** 复制代码成功 */
 const copyTextSuccess = () => {
   ElMessage.success("复制成功")
-
 }
 
 const authName = ref("")
@@ -125,7 +122,10 @@ const filterNode = (value, data) => {
 
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  ElMessage.success("测试输出结点id："+ data.id)
+  const currentPageButtons = userButtons.value.filter(button => button.unique === data.unique);
+  // 更新表格中显示的按钮权限
+  userButtons.value = currentPageButtons;
+  ElMessage.success("测试输出结点名字："+ data.name)
 };
 
 </script>

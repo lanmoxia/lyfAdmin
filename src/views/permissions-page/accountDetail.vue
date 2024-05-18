@@ -12,7 +12,8 @@
         <div class="header">
           <!-- 头部渲染表格 -->
           <el-descriptions :column="2" border>
-            <el-descriptions-item label="用户ID">{{ userInfo.account }}</el-descriptions-item>
+            {{ userInfo }}
+            <el-descriptions-item label="用户ID">{{ userInfo.username }}</el-descriptions-item>
             <el-descriptions-item label="性别">
               男
             </el-descriptions-item>
@@ -23,9 +24,9 @@
               182xxxxxx77
             </el-descriptions-item>
             <el-descriptions-item label="居住地">河南省郑州市金水区xxx</el-descriptions-item>
-            <el-descriptions-item label="入职时间">{{ userInfo.date }}</el-descriptions-item>
-            <el-descriptions-item label="备注" :span="2">
-              <el-tag size="small">{{ userInfo.role_name }}</el-tag>
+            <el-descriptions-item label="入职时间">{{ userInfo.createdAt }}</el-descriptions-item>
+            <el-descriptions-item label="角色" :span="2" v-if="userInfo.roles && userInfo.roles.length > 0">
+              <el-tag size="small">{{ userInfo.roles[0].description }}</el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="联系地址" :span="2">河南省郑州市金水区xxx</el-descriptions-item>
           </el-descriptions>
@@ -64,19 +65,31 @@ export default {
 </script>
 <script setup>
 import { useRoute } from 'vue-router'
-import { ref, onMounted, watch } from "vue";
-const route = useRoute()
+import { onMounted, ref, watch } from "vue";
+import {api} from '@/api'
 
+const route = useRoute()
 const userInfo = ref({})
 
 
+onMounted(() => {
+  getUser()
+})
+
+// 获取用户信息
+const getUser = async () => {
+  const [err,res] = await api.userOne(route.query.id)
+  userInfo.value = res.data.user
+}
+
 // 打印相关
 const printLoading = ref(false)
+
 const printObj = {
   // 打印区域
   id: 'userInfoBox',
   // 打印标题
-  popTitle: 'admin-vue3-vite',
+  popTitle: 'vertex-admin',
   // 打印前
   beforeOpenCallback(vue) {
     printLoading.value = true
@@ -86,11 +99,12 @@ const printObj = {
     printLoading.value = false
   }
 }
+
 watch(
   () => route.query.id,
-  val => {
-    if (val) {
-      userInfo.value = route.query
+  (newId) => {
+    if (newId) {
+      getUser()
     }
   },  //第一次进来也触发
   {

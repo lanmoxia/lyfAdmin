@@ -1,44 +1,53 @@
-import requests from '@/api/request'
-import { ACCESS_TOKEN, REFRESH_TOKEN, AUTH,PASS } from "@/constant"
-import {getItem,setItem,removeItem} from '@/utils/storage'
+import {api} from '@/api'
+import store from '@/store'
+import { ACCESS_TOKEN, REFRESH_TOKEN,PASS } from "@/constant"
+import {setItem,removeItem} from '@/utils/storage'
+
 let subscribes = []
 let flag = false // 设置开关，保证一次只能请求一次短token，防止客户多点操作，多次请求
+
 export const addRequest = (request) => {
-    subscribes.push(request)
+  subscribes.push(request)
 }
 
 export const retryRequest = () => {
-    console.log('重新请求上次中断的数据');
-    subscribes.forEach(request => request())
-    subscribes = []
-}
+  console.log('重新请求上次中断的数据')
+  // console.log('subscribes',subscribes)
+  subscribes.forEach((request, index) => {
+    if (typeof request === 'function') {
+      console.log(`开始执行索引为 ${index} 的请求函数`)
+      request();
+      console.log(`索引为 ${index} 的请求函数执行完毕`)
+    } else {
+      console.error(`索引为 ${index} 的subscribe不是函数，其值为：`, request)
+    }
+  })
+  subscribes = []
+  } 
 
 // 验证长token 去请求新的短token
-export const refreshToken = () => {
-    if (!flag) {
-        flag = true // 关闭开关
-        let r_tk = getItem(REFRESH_TOKEN) // 获取长token
-
-        // 携带长token去请求短token
-        requests.get('/refresh', {
-            headers: { [PASS]: r_tk }       
-        }).then((res) => {
-            // 长token失效，删除token，重新登录
-            if (res.code === 4004) {
-                flag = false
-                removeItem(REFRESH_TOKEN)
-            } else if (res.code === 2002) { //长token有效，请求到新的token，重新存储
-                removeItem(REFRESH_TOKEN)
-                // 存储新的短token
-                setItem(ACCESS_TOKEN,res.data.accessToken)
-                setItem(REFRESH_TOKEN,res.data.refreshToken)
-                flag = false
-                // 重新请求数据
-                retryRequest()
-            }
-
-        })
-
-    }
-
+export const refreshToken = async () => {
+  if (!flag) {
+    flag = true; // 开始刷新token
+    const rfk = getItem(REFRESH_TOKEN) || "" 
+    const [err, res] = await api.refreshToken( {}, {
+      headers: {
+        [PASS]: `Bearer ${rfk}`
+      }
+    })
+    if (!err) {
+      const result = res.data.data
+      // 刷新成功，存储新token
+      setItem(ACCESS_TOKEN, result.info.accessToken)
+      setItem(REFRESH_TOKEN, result.info.refreshToken)
+      store.commit('user/setAccessToken',result.info.accessToken)
+      store.commit('user/setRefreshToken', result.info.refreshToken)
+      flag = false
+      // 重试之前失败的请求
+      retryRequest()
+    }else {
+      flag = false
+      removeItem(REFRESH_TOKEN)
+    } 
+  }
 }

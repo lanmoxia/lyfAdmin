@@ -1,60 +1,59 @@
 import axios from 'axios'
-import {USERINFO,ACCESS_TOKEN,REFRESH_TOKEN,AUTH,PASS,AXIOS_TIMEOUT} from '@/constant'
-import {getItem,setItem,removeItem,removeAllItem} from '@/utils/storage'
-import router from '@/router'
-import { addRequest, refreshToken } from "@/utils/refresh"
+import {AXIOS_TIMEOUT,ACCESS_TOKEN,AUTH} from '@/constant'
+import {
+  handleAuthError,
+  handleGeneralError,
+  handleNetworkError,
+} from "./tools"
+import { addRequest } from "@/utils/refresh"
+import {getItem} from '@/utils/storage'
 // 初始化
-const requests = axios.create({
+const server = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: AXIOS_TIMEOUT
 })
 
 
 // 请求拦截器
-requests.interceptors.request.use(
+server.interceptors.request.use(
   config => {
-    // token 最好在 storage中获取 , pinia 可能还未初始化
-    const token = getItem(ACCESS_TOKEN) || "" 
-    if(token){
-      // config.headers[AUTH] = `Bearer + ${user.token}`
-      config.headers[AUTH] = token
+    config.headers = config.headers || {};
+    config.headers['Content-Type'] = config.headers['Content-Type'] || 'application/json';
+    try {
+      const accessToken = getItem(ACCESS_TOKEN) || "";
+      if (accessToken) {
+        config.headers[AUTH] = `Bearer ${accessToken}`;
+      }
+    } catch (error) {
+      console.error('Error getting access token:', error);
     }
     return config
   },
   error => {
-    return Promise.reject(error)
+    return Promise.reject(new Error(error))
   }
 )
 
 // 响应拦截器
-requests.interceptors.response.use( 
-  async response => {
-    let {config, data} = response
-    return new Promise((resolve,reject)=>{ 
-      if(data.code === 4003){
-        removeItem(ACCESS_TOKEN)
-        addRequest(() => resolve(requests(config)))
-        refreshToken()
-      }else {
-        resolve(data)
+server.interceptors.response.use(
+  response => {
+    let {status,data,config} = response
+    if (status !== 200) return Promise.reject(data)
+    if(data.code && data.code !== 200){
+      const isAuthErrorHandled = handleAuthError(data.code, config)
+      if (!isAuthErrorHandled){
+        return new Promise((resolve) => {
+          // 添加到重试队列，等待 token 刷新
+          addRequest(() => resolve(server(config)))
+        })        
       }
-    })
-},error => {
-  // 处理响应错误
-  let errorMessage = '请求失败'
-  if (error.response) {
-    // 服务器返回了响应
-    errorMessage += `: ${error.response.status} ${error.response.statusText} + 'xxx'`
-  } else if (error.request) {
-    // 请求已发出，但没有收到响应
-    errorMessage += ': 服务器没有响应a'
-  } else {
-    // 发生了其他错误
-    errorMessage += `: ${error.message}`
+      handleGeneralError(data.message)
+    } 
+    return response
+  }, err => {
+    handleNetworkError(err.response.status)
+    return Promise.reject(err)
   }
-  // 可以在这里添加错误提示，例如使用ElementUI的Message组件
-  // ElMessage.error(errorMessage);
-  return Promise.reject(new Error(errorMessage))
-})
+)
 
-export default requests
+export default server

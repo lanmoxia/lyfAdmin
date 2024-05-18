@@ -7,7 +7,7 @@
             <div class="contentArea">
               <div class="welcomeMessage">
                 <div class="title"><span> Welcome back</span> 👋</div>
-              <div class="nickName"><span>admin@gmail.com</span></div>
+              <div class="nickName"><span>{{ store.getters.userInfo.username }}</span></div>
               </div>
               <div class="articleInfo">
                 <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there is not anything.</p>
@@ -75,6 +75,9 @@
   import LineEchat from './components/LineEchat'
   import PieEchat from './components/PieEchat'
   import doubleLineEchat from './components/DoubleLineEchat'
+  import { useStore } from 'vuex'
+
+  const store = useStore()
   </script>
   
   <style lang="scss" scoped>

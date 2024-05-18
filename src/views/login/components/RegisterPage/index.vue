@@ -35,8 +35,8 @@
 
     <!-- 注册按钮 -->
     <el-form-item>
-      <el-button :loading="store.getters.isLoading" size="large" style="width: 100%; border-radius: 8px;" type="primary"  @click.native.prevent="handleRegister" >
-        注册
+      <el-button disabled :loading="store.getters.isLoading" size="large" style="width: 100%; border-radius: 8px;" @click.native.prevent="handleRegister" >
+        注册功能暂未开放
       </el-button>
     </el-form-item>
 
@@ -62,7 +62,7 @@
 import { reactive, ref, onMounted, computed} from 'vue'
 import { regValidatePassword, regValidateConfirmPassword,regValidateCode} from '../../registerRules'
 import { useStore } from 'vuex'
-import {getCode,userRegister} from '@/api'
+import {api} from '@/api'
 import {ElMessage } from 'element-plus'
 import md5 from 'js-md5';
 
@@ -138,7 +138,7 @@ const onChangePwdType = () => {
   }
 }
 
-// 登录动作处理
+// 登录注册处理
 const registerFromRef = ref()
 const store = useStore()
 
@@ -146,7 +146,7 @@ const store = useStore()
  * 注册
  */
  const handleRegister = () => {
-  registerFromRef.value.validate (valid => {
+  registerFromRef.value.validate ( async valid => {
     if (!valid) return 
     if (registerForm.captcha_code.toLowerCase() != code_net.value.toLowerCase()) {
       getCodeImg()
@@ -160,29 +160,24 @@ const store = useStore()
       password: md5(registerForm.password)
     }
     store.commit('user/setLoadingState', true)
-    userRegister(params)
-      .then(() => { 
-        store.commit('user/setActiveState', 'login') 
-        store.commit('user/setLoadingState', false)       
-      })
-      .catch(async err => {
-        console.log(err)
-        getCodeImg()
-        store.commit('user/setLoadingState', false)
-      })
+    const [err,res] = await api.userRegister(params)
+    if(!err){ 
+      store.commit('user/setActiveState', 'login') 
+      store.commit('user/setLoadingState', false)       
+    }else {
+      console.log(err)
+      getCodeImg()
+      store.commit('user/setLoadingState', false)
+    }
   })
 }
 /**
  * 获取图形验证码
  */
  const getCodeImg = async () => {
-  try{
-    const data = await getCode()
-    code_net.value = data.code
-  }catch(error){
-    throw error
-  }
- }
+  const [err,res] = await api.getCode()
+  code_net.value = res.data.code
+}
 
 /**
  * 返回
@@ -197,6 +192,11 @@ const store = useStore()
 @import '@/styles/element.scss';
 :deep(.el-form-item__content){
   line-height: 40px;
+}
+:deep(.button:disabled){
+  border-color: #d9d9d9;
+    color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.03);
 }
 .showPassword {
   position: absolute;

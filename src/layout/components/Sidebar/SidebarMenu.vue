@@ -14,13 +14,14 @@ import SidebarItem from "./SidebarItem";
 
 const router = useRouter();
 const routes = computed(() => {
-  // filterRouters => 过滤脱离层级的路由 
-  // 比如 一级有一个home菜单，下边
-  const filterRoutes = filterRouters(router.getRoutes()); // router.getRoutes() 当前路由实例中所有路由数组
+  // filterRouters 过滤脱离层级的路由 
+  const filterRoutes = filterRouters(router.getRoutes());
   return generateMenus(filterRoutes);
 });
+
 // 计算高亮 menu 的方法
 const route = useRoute();
+// 启用 vue-router 模式
 const activeMenu = computed(() => {
   const { path } = route;
   return path;

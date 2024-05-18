@@ -1,11 +1,8 @@
-import { userLogin, getPermission,mobileLogin} from '@/api'
+import {api} from '@/api'
 import { setItem, getItem, removeAllItem } from '@/utils/storage'
 import { ACCESS_TOKEN,REFRESH_TOKEN,USERINFO } from '@/constant'
 import { setTimeStamp } from '@/utils/auth'
-import { formatPermissionList } from '@/utils/index'
 import router, { resetRouter } from '@/router'
-import { ElMessage } from "element-plus"
-
 
 export default {
     namespaced: true,
@@ -45,72 +42,48 @@ export default {
         }
     },
     actions: {
-        login(context, userInfo) {
-            const { username, password, captcha_code } = userInfo
-            return new Promise((resolve, reject) => {
-                userLogin({
-                    username,
-                    password,
-                    captcha_code
-                })
-                    .then(data => {
-                        this.commit('user/setAccessToken', data.accessToken)
-                        this.commit('user/setRefreshToken', data.refreshToken)
-                        this.commit('user/setUserInfo', data.info)
-                        // 保存登录时间
-                        setTimeStamp()
-                        resolve()
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
-            })
+        async login(context, userInfo) {
+          const { username, password, captcha_code } = userInfo
+          const [err,res] = await api.userLogin({username,password,captcha_code})
+          const result = res.data
+          this.commit('user/setAccessToken', result.accessToken)
+          this.commit('user/setRefreshToken', result.refreshToken)
+          this.commit('user/setUserInfo', result.info)
+          // 保存登录时间
+          setTimeStamp()          
         },
-        mobileLogin(context,userInfo){
+        async mobileLogin(context,userInfo){
           const { mobile, sms_code} = userInfo
-          return new Promise((resolve, reject) => {
-            mobileLogin({
-                  mobile,
-                  sms_code
-              })
-                  .then(data => {
-                      this.commit('user/setAccessToken', data.accessToken)
-                      this.commit('user/setRefreshToken', data.refreshToken)
-                      this.commit('user/setUserInfo', data.info)
-                      // 保存登录时间
-                      setTimeStamp()
-                      resolve()
-                  })
-                  .catch(err => {
-                      reject(err)
-                  })
-          })
+          const [err,res] = await api.mobileLogin({ mobile,sms_code})
+          const result = res.data.data
+          this.commit('user/setAccessToken', result.accessToken)
+          this.commit('user/setRefreshToken', result.refreshToken)
+          this.commit('user/setUserInfo', result.info)
+          // 保存登录时间
+          setTimeStamp()
         },
-        getPermissionData() {
-            return new Promise((resolve, reject) => {
-                getPermission()
-                    .then(data => {
-                        const dataSource = data.data
-                        let obj = formatPermissionList(dataSource)
-                        let role_arr = obj.role_arr
-                        let button_arr = obj.button_arr
-                        let info = {
-                            roles: role_arr
-                        }
-                        if (role_arr.length == 0) {
-                            ElMessage.error("您登录的账号暂无权限！")
-                            this.dispatch('user/logout')
-                        }
-                        this.commit('user/setRoles', role_arr)
-                        this.commit('user/setButtons', button_arr)
-                        resolve(info)
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
+        async getPermissionData() {
+          const [err,res] = await api.userPermissions()
+          if(!err){
+            const menuList = res.data[0].menus.map(obj => {
+              let result = { unique: obj.unique,sort: obj.sort }
+              if (obj.icon && obj.icon.trim() !== '') {
+                result.icon = obj.icon.replace(/<\?xml.*?\?>|<!DOCTYPE.*?>/g, '')
+              }
+              return result
             })
+            const resourcesList = res.data[0].resources.map(obj => ({
+              name: obj.name,
+              url: obj.unique
+            }))
+            this.commit('user/setRoles', menuList)
+            this.commit('user/setButtons', resourcesList)
+            console.log('vuex_userPermissions')
+            return menuList
+          }
         },
         logout() {
+            console.log('退出登录')
             resetRouter()
             this.commit('user/setAccessToken', '')
             this.commit('user/setRefreshToken', '')
@@ -126,6 +99,9 @@ export default {
         updateUserInfo({state},avatar){
           const updatedUserInfo = { ...state.userInfo, avatar}
           this.commit('user/setUserInfo', updatedUserInfo)
+        },
+        loginBtnLoading(){
+          this.commit('user/setLoadingState', false)
         }
     }
 }

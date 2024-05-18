@@ -1,6 +1,6 @@
 <template>
     <div class="svgIcon">
-      <svg-icon icon='qr_code' :size="300" class="qr_code"></svg-icon>
+      <svg-icon icon='qr_code' size="300" class="qr_code"></svg-icon>
     </div>
     <!-- 注册条款 -->
     <div class="registrationTerms">

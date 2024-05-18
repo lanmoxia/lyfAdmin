@@ -1,4 +1,5 @@
 <template>
+  <!-- 标签页组件 -->
   <div class="tags-view-container">
     <el-scrollbar class="tags-view-wrapper">
 
@@ -28,7 +29,6 @@ import ContextMenu from './ContextMenu.vue'
 import { ref, reactive, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-// import store from '@/store'
 
 const route = useRoute()
 

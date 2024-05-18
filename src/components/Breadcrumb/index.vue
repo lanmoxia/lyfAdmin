@@ -1,4 +1,5 @@
 <template>
+  <!-- 面包屑 -->
   <el-breadcrumb class="breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item, index) in breadcrumbData" :key="item.path">

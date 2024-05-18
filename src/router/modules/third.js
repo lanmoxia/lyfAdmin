@@ -18,16 +18,14 @@ export default {
             path: '/third/editor',
             component: () => import('@/views/third-page/editor/index.vue'),
             name: 'editor',
-            meta: {
-                title: '富文本', icon: 'article-ranking'
-            }
+            meta: {title: '富文本'}
         },
         {
             path: '/third/markdown',
             component: () => import('@/views/third-page/markdown/index.vue'),
             name: 'markdown',
             meta: {
-                title: 'markdown', icon: 'article-create'
+                title: 'markdown'
             }
         }
 

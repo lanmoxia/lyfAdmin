@@ -66,7 +66,7 @@ export function resetRouter() {
     if (store.getters.hasRoles) {
         const menus = store.getters.roles
         menus.forEach(menu => {
-            let url = menu.url
+            let url = menu.unique
             let i = url.lastIndexOf('/')
             let name = url.substring(i + 1, url.length)
             router.removeRoute(name)
@@ -78,7 +78,6 @@ export function resetRouter() {
 const router = createRouter({
     history: createWebHashHistory(),
     routes: publicRoutes
-
 })
 
 export default router

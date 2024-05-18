@@ -18,50 +18,50 @@ export default {
       path: '/cssAnimation/shootingStar',
       component: () => import('@/views/css-animation/shootingStar.vue'),
       name: 'shootingStar',
-      meta: { title: '流星雨', icon: 'star' }
+      meta: { title: '流星雨' }
     },
 
     {
       path: '/cssAnimation/jumpBlock',
       component: () => import('@/views/css-animation/jumpBlock.vue'),
       name: 'jumpBlock',
-      meta: { title: '能跳动的icon', icon: 'star' }
+      meta: { title: '能跳动的icon' }
     },
     {
       path: '/cssAnimation/downBtn',
       component: () => import('@/views/css-animation/downBtn.vue'),
       name: 'downBtn',
-      meta: { title: '奇怪的下载按钮', icon: 'star' }
+      meta: { title: '奇怪的下载按钮' }
     },
     {
       path: '/cssAnimation/hover',
       redirect: '/cssAnimation/hoverShiningBtn',
       name: 'hover',
-      meta: { title: 'hover动画效果', icon: 'permissio' },
+      meta: { title: 'hover动画效果' },
       children: [
         {
           path: '/hover/hoverShiningBtn',
           component: () => import('@/views/css-animation/hoverShiningBtn.vue'),
           name: 'hoverShiningBtn',
-          meta: { title: '会发光的按钮', icon: 'star' }
+          meta: { title: '会发光的按钮' }
         },
         {
           path: '/hover/hoverFillText',
           component: () => import('@/views/css-animation/hoverFillText.vue'),
           name: 'hoverFillText',
-          meta: { title: '菜单填充效果', icon: 'star' }
+          meta: { title: '菜单填充效果' }
         },
         {
           path: '/hover/hoverSlideMenu',
           component: () => import('@/views/css-animation/hoverSlideMenu.vue'),
           name: 'hoverSlideMenu',
-          meta: { title: '菜单扫描效果', icon: 'star' }
+          meta: { title: '菜单扫描效果' }
         },
         {
           path: '/hover/hoverBorderBtn',
           component: () => import('@/views/css-animation/hoverBorderBtn.vue'),
           name: 'hoverBorderBtn',
-          meta: { title: 'border流动按钮', icon: 'star' }
+          meta: { title: 'border流动按钮' }
         },
       ]
     },
@@ -69,61 +69,61 @@ export default {
       path: '/cssAnimation/videoMaskText',
       component: () => import('@/views/css-animation/videoMaskText.vue'),
       name: 'videoMaskText',
-      meta: { title: '以视频为背景的文字', icon: 'star' }
+      meta: { title: '以视频为背景的文字' }
     },
     {
       path: '/cssAnimation/filpCard',
       component: () => import('@/views/css-animation/filpCard.vue'),
       name: 'filpCard',
-      meta: { title: '翻卡片动画', icon: 'star' }
+      meta: { title: '翻卡片动画' }
     },
     {
       path: '/cssAnimation/slidePic',
       component: () => import('@/views/css-animation/slidePic.vue'),
       name: 'slidePic',
-      meta: { title: '图片无缝滚动切换', icon: 'star' }
+      meta: { title: '图片无缝滚动切换' }
     },
     {
       path: '/cssAnimation/bubbleFloat',
       component: () => import('@/views/css-animation/bubbleFloat.vue'),
       name: 'bubbleFloat',
-      meta: { title: 'ios动态气泡壁纸', icon: 'star' }
+      meta: { title: 'ios动态气泡壁纸' }
     },
     {
       path: '/cssAnimation/waveloading',
       component: () => import('@/views/css-animation/waveloading.vue'),
       name: 'waveloading',
-      meta: { title: '水波纹loading效果', icon: 'star' }
+      meta: { title: '水波纹loading效果' }
     },
     {
       path: '/cssAnimation/fullscreenMenu',
       component: () => import('@/views/css-animation/fullscreenMenu.vue'),
       name: 'fullscreenMenu',
-      meta: { title: '全屏菜单动画', icon: 'star' }
+      meta: { title: '全屏菜单动画' }
     },
     {
       path: '/cssAnimation/hoverSlideMenu',
       component: () => import('@/views/css-animation/hoverSlideMenu.vue'),
       name: 'hoverSlideMenu',
-      meta: { title: 'hover菜单扫描效果', icon: 'star' }
+      meta: { title: 'hover菜单扫描效果' }
     },
     {
       path: '/cssAnimation/tabs',
       component: () => import('@/views/css-animation/tabs.vue'),
       name: 'tabs',
-      meta: { title: '有趣的tab效果', icon: 'star' }
+      meta: { title: '有趣的tab效果' }
     },
     {
       path: '/cssAnimation/clock',
       component: () => import('@/views/css-animation/clock.vue'),
       name: 'tabs',
-      meta: { title: '时钟效果', icon: 'star' }
+      meta: { title: '时钟效果' }
     },
     {
       path: '/cssAnimation/snowScratch',
       component: () => import('@/views/css-animation/snowScratch.vue'),
       name: 'snowScratch',
-      meta: { title: '雪地划痕', icon: 'star' }
+      meta: { title: '雪地划痕' }
     }
   ]
 }

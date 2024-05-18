@@ -1,7 +1,7 @@
 <template>
   <div class="menu-wrapper">
     <div class="logo-container" :class="$store.getters.sidebarOpened ? '' : 'hideSidebar'">
-     <h1>Logo</h1>
+     <h1>Vertex</h1>
      <!-- <svg-icon icon="logo" size="50"/> -->
     </div>
     <el-scrollbar wrap-style="background: '#787878;'">
@@ -24,6 +24,7 @@ import SidebarMenu from "./SidebarMenu";
     color: #00a76f;
     @include flex-box-set();
     margin: 20px 5px 20px 5px;
+    >h1{font-weight: bold; font-size: 35px;}
     &.hideSidebar {
       font-size: 9px;
       font-weight: 700;

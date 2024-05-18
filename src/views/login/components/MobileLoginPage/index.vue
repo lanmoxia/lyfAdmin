@@ -41,7 +41,7 @@ import { reactive, ref} from 'vue'
 import { validateMobile, validateSms_code} from '../../loginRules'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import {getSmsCode} from '@/api'
+import {api} from '@/api'
 import {ElMessage } from 'element-plus'
 
 const countDown = ref(59)
@@ -98,44 +98,38 @@ const startCountDown = () => {
  * 发送手机验证码
  */
 const sedCode = () => {
+  startCountDown()
   // 单独校验手机号
-  loginFromRef.value.validateField('mobile', (valid) => {
+  loginFromRef.value.validateField('mobile', async (valid) => {
     if (!valid) return
     // 如果手机号校验通过，则发送请求获取验证码
-    getSmsCode({mobile: loginForm.mobile}).then((res) => {
-      isSendCode.value = true;
-      startCountDown()
-      setTimeout(() => {
-        loginForm.sms_code = res.code
-        isSendCode.value = false;
-      },2000)
-      ElMessage.success('验证码已发送');
-    }).catch((error) => {
-      console.error('验证码发送失败', error);
-      ElMessage.error('验证码发送失败');
-    });
-  });
+    isSendCode.value = true;
+    const [err,res] = await api.getSmsCode({mobile: loginForm.mobile})
+    console.log(res.data)
+    const result = res.data.data
+    setTimeout(() => {
+      loginForm.sms_code = result.code
+      isSendCode.value = false;
+    },2000)
+    ElMessage.success('验证码已发送');
+  })
 }
 
 
 /**
- * 注册
+ * 注册登录
  */
  const handleLogin = () => {
   loginFromRef.value.validate (valid => {
     if (!valid) return 
     store.commit('user/setLoadingState', true)
-    store.dispatch('user/mobileLogin', loginForm)
-      .then(() => { 
-        router.push('/')
-        setTimeout(() => {
-          store.commit('user/setLoadingState', false)  
-        },1000)              
-      })
-      .catch(async err => {
-        console.log(err)
-        store.commit('user/setLoadingState', false)
-      })
+    store.dispatch('user/mobileLogin', loginForm).then((res)=>{
+      router.push('/')
+      store.commit('user/setLoadingState', false)
+    }).catch((err) => {
+      console.log(err)
+      store.commit('user/setLoadingState', false)
+    })
   })
 }
 
@@ -159,6 +153,7 @@ const sedCode = () => {
   flex-wrap: nowrap;
 }
 :deep(.el-button.is-disabled){
+  cursor: not-allowed;
   border-color: #d9d9d9;
   color: rgba(0, 0, 0, 0.25);
   background-color: rgba(0, 0, 0, 0.04) !important;

@@ -25,6 +25,10 @@ import RightToolbar from '@/components/RightToolbar'
 import Pagination from '@/components/Pagination'
 // svg组件
 import svgIcon from "@/components/SvgIcon/index.vue";
+
+// 全局注册按钮级别权限组件
+import Auth from "@/components/ReAuth";
+app.component("Auth", Auth);
 // 全局组件挂载
 app.component('RightToolbar', RightToolbar)
 app.component('Pagination', Pagination)

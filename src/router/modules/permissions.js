@@ -5,7 +5,7 @@ import Layout from '@/layout'
 export default{
   path: '/adminAuth',
   component: Layout,
-  redirect: '/adminAuth/getRoleList',
+  redirect: '/adminAuth/roleList',
   alwaysShow: true, // will always show the root menu
   name: 'adminAuth',
   meta: {
@@ -14,28 +14,28 @@ export default{
   },
   children: [
     {
-      path: '/adminAuth/getRoleList',
+      path: '/adminAuth/roleList',
       component: () => import('@/views/permissions-page/roleList.vue'),
       name: 'getRoleList',
-      meta: { title: '角色列表',icon:'role'}
+      meta: { title: '角色列表'}
     },
     {
       path: '/adminAuth/adminList',
       component: () => import('@/views/permissions-page/accountList.vue'),
       name: 'adminList',
-      meta: { title: '账号列表',icon:'personnel'}
+      meta: { title: '账号列表'}
     },
     {
       path: '/adminAuth/permissionList',
       component: () => import('@/views/permissions-page/permissionList.vue'),
       name: 'permissionList',
-      meta: { title: '权限列表',icon:'permission'}
+      meta: { title: '权限列表'}
     },
     {
       path: '/account/detail',
       name: 'accountDetail',
       component: () => import('@/views/permissions-page/accountDetail.vue'),
-      meta: { title: '账号详情',icon:'personnel'},
+      meta: { title: '账号详情'},
       hidden: true,//true不显示在侧边栏
 
     }

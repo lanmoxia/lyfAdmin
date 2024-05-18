@@ -1,4 +1,5 @@
 <template>
+  <!-- 分页组件 -->
   <div :class="{ 'hidden': hidden }" class="pagination-container">
     <el-pagination
       :background="background"
@@ -29,7 +30,7 @@ const props = defineProps({
   },
   limit: {
     type: Number,
-    default: 20
+    default: 10
   },
   pageSizes: {
     type: Array,
@@ -37,6 +38,7 @@ const props = defineProps({
       return [10, 20, 30,40, 50]
     }
   },
+
   // 移动端页码按钮的数量端默认值5
   pagerCount: {
     type: Number,
