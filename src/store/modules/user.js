@@ -102,9 +102,9 @@ export default {
             removeAllItem()
             router.push('/login')          
         },
-        updateUserInfo({state},avatar){
-          const updatedUserInfo = { ...state.userInfo, avatar}
-          this.commit('user/setUserInfo', updatedUserInfo)
+        updateUserInfo({state},updatedData){
+          const updatedUserInfo = { ...state.userInfo, ...updatedData };
+          this.commit('user/setUserInfo', updatedUserInfo);
         },
         loginBtnLoading(){
           this.commit('user/setLoadingState', false)

@@ -37,6 +37,13 @@ const Post = (url, data, params = {}, config = {}) =>
 
 const Put = (url, data, params = {}, config = {}) =>
   new Promise(resolve => {
+    // 检查是否是文件上传，如果是，设置 'Content-Type' 为 'multipart/form-data'
+    if (data instanceof FormData) {
+      config.headers = {
+        ...(config.headers), // 保留已有的headers
+        'Content-Type': 'multipart/form-data' 
+      }
+    }
     server
       .put(url, data, { params, ...config })
       .then(result => {

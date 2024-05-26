@@ -78,7 +78,7 @@ const code_net = ref('')
 
 onMounted(async () => {
   await getCodeImg()
-  checkChange(checked.value);
+  checkChange(checked.value)
 })
 
 // 填充账号密码

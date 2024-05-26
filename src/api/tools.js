@@ -16,6 +16,7 @@ export const handleAuthError = (errno) => {
   if (authErrMap.hasOwnProperty(errno)) {
     ElMessage.error(authErrMap[errno])
     store.dispatch('user/logout')
+    store.commit('user/setLoadingState', false)
     return false
   }else if(errno === "100401"){
     removeItem(ACCESS_TOKEN)
@@ -54,7 +55,8 @@ export const handleNetworkError = (errStatus) => {
   }
   if (errStatus) {
     ElMessage.error(networkErrMap[errStatus] ?? `其他连接错误 --${errStatus}`);
-    return
+    return store.dispatch('user/logout')
   }
   ElMessage.error("无法连接到服务器！")
+  store.dispatch('user/logout')
 }

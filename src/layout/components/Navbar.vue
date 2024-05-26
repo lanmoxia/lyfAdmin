@@ -23,7 +23,7 @@
             class="avatar"
             :src="$store.getters.userInfo.avatar"
           ></el-image>
-          <div >{{ $store.getters.userInfo.username }}</div>
+          <div >{{username}}</div>
           <CaretBottom style="width: 1em; height: 1em; margin-left: 4px" />
         </div>
 
@@ -126,7 +126,7 @@
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { CaretBottom } from "@element-plus/icons";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex";
 import Hamburger from "@/components/Hamburger";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -134,14 +134,18 @@ import Screenfull from "@/components/Screenfull";
 import Guide from "@/components/Guide";
 import HeaderSearch from "@/components/HeaderSearch";
 import { ElMessage } from "element-plus";
-import { api } from "@/api";
+import { api } from "@/api"
 
-const store = useStore();
+const store = useStore()
 const loading = ref(false)
 const open = ref(false); // 打开编辑头像
 const visible = ref(false);
 const title = ref("修改头像");
 const cropper = ref(null);
+
+const username = computed(() => {
+  return store.getters.userInfo.name !== "" ? store.getters.userInfo.name : store.getters.userInfo.username
+})
 
 //图片裁剪数据
 const options = reactive({
@@ -197,26 +201,26 @@ function uploadImg() {
   cropper.value.getCropBlob(async (blob) => {
     if (!(blob instanceof Blob)) {
       // 如果不是Blob类型，创建一个Blob对象
-      blob = new Blob([blob], { type: 'image/png' });
+      blob = new Blob([blob], { type: 'image/png' })
     }
-    let formData = new FormData();
-    formData.append("avatar", blob, 'avatar.png');
-    formData.append("id", store.getters.userInfo.id);
-    const [err,res] = await api.userAvatarUpdate(formData)
+    let formData = new FormData()
+    formData.append("avatar", blob, 'avatar.png')
+    // formData.append("name", "蟹老板")
+    const userId = store.getters.userInfo.id
+    const [err,res] = await api.userUpdate(userId,formData)
     open.value = false
     loading.value = false    
-    options.img = res.data.avatar
-    console.log(options.img)
-    console.log(res.data.avatar)
-    if (res.data.avatar) {
-      store.dispatch('user/updateUserInfo', res.data.avatar);
-      ElMessage.success("修改成功");
+    if (!err) {
+      const user = res.data.user
+      options.img = user.avatar
+      await store.dispatch('user/updateUserInfo', user)
+      ElMessage.success("修改成功")
     } else {
       loading.value = false    
-      ElMessage.error("头像更新失败，请重试。");
+      ElMessage.error("头像更新失败，请重试。")
     }
-    visible.value = false;
-  });
+    visible.value = false
+  })
 }
 /** 实时预览 */
 function realTime(data) {
