@@ -68,7 +68,7 @@ watch(
 
 <style lang="scss" scoped>
 .app-main {
-  padding: 16px 32px 16px 16px;
+  padding: 16px;
   background-color: white;
 }
 </style>

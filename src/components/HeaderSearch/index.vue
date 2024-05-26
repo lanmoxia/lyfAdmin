@@ -2,7 +2,7 @@
   <!-- 搜索组件 -->
   <div :class="{ show: isShow }" class="header-search">
 
-    <svg-icon id="guide-search" :size="20" class-name="search-icon" icon="search" @click.stop="onShowClick" />
+    <svg-icon id="guide-search" size="22" color="#5a5e66" class-name="search-icon" icon="search" @click.stop="onShowClick" />
 
     <el-select ref="headerSearchSelectRef" class="header-search-select" v-model="search" filterable default-first-option
       remote placeholder="请输入页面（路由）名字" :remote-method="querySearch" @change="onSelectChange">

@@ -97,8 +97,8 @@ const loading = ref(false)
 // 获取用户权限列表
 const getPermissionListData = async () => {
   loading.value = true
-  const [err,res] = await api.userPermissions()
-  userMenus.value = buildTree(res.data[0].menus)
+  const [err,res] = await api.permissionList()
+  userMenus.value = buildTree(res.data.menus)
   loading.value = false
 }
 getPermissionListData()

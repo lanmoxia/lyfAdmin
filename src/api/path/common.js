@@ -25,7 +25,7 @@ export function mobileLogin(data){
   return Post('/mobile_login', data)
 }
 
-// 用户权限获取
+// 权限获取
 export function permissionList(){
   return Get('/permissions')
 }

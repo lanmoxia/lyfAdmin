@@ -105,13 +105,13 @@ const sedCode = () => {
     // 如果手机号校验通过，则发送请求获取验证码
     isSendCode.value = true;
     const [err,res] = await api.getSmsCode({mobile: loginForm.mobile})
-    console.log(res.data)
-    const result = res.data.data
-    setTimeout(() => {
-      loginForm.sms_code = result.code
-      isSendCode.value = false;
-    },2000)
-    ElMessage.success('验证码已发送');
+    if(!err){
+      setTimeout(() => {
+        loginForm.sms_code = res.data.code
+        isSendCode.value = false
+      },2000)
+      ElMessage.success('验证码已发送')
+    }
   })
 }
 

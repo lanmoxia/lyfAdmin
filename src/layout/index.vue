@@ -46,7 +46,7 @@ import TagsView from '@/components/TagsView'
   }
   .main-container {
     .container {
-     margin-top: 99px;
+     margin-top: 86px;
     }
     .fixed-header {
       position: fixed;

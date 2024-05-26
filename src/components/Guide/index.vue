@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tooltip content="功能引导">
-      <svg-icon id="guide-start" icon="guide" size="24" @click="onClick" />
+      <svg-icon id="guide-start" icon="guide" size="22" color="#5a5e66" @click="onClick" />
     </el-tooltip>
   </div>
 </template>

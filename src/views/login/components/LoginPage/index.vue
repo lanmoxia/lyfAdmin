@@ -125,8 +125,7 @@ const loginRules = ref({
       trigger: 'blur',
       validator: validateCode()
     },
-
-  ],
+  ]
 })
 // 处理密码框文本显示状态
 const passwordType = ref('password')
@@ -156,7 +155,7 @@ const randomColor = () => {
 /**
  * 登录
  */
- const handleLogin = async () => {
+ const handleLogin = () => {
   loginFromRef.value.validate (async valid => {
     store.commit('user/setLoadingState', true)
     if (!valid) return  
@@ -171,10 +170,8 @@ const randomColor = () => {
     }
     
     await store.dispatch('user/login', formData)
-    ElMessage.success('登录成功')
-    store.commit('user/setLoadingState', false) 
-    router.push('/')  
-    getCodeImg()
+    router.push('/')
+    store.commit('user/setLoadingState', false)
   })
 }
 

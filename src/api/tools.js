@@ -1,12 +1,45 @@
-import store from '@/store';
+import store from '@/store'
 import { ElMessage } from 'element-plus'
-import {ACCESS_TOKEN} from '@/constant'
-import {refreshToken } from "@/utils/refresh"
-import {removeItem } from '@/utils/storage'
+import { refreshToken } from "@/utils/refresh"
+import {getItem, removeItem} from '@/utils/storage'
+import {AXIOS_TIMEOUT,ACCESS_TOKEN,AUTH} from '@/constant'
 
+// 关于校验统一错误处理函数
+export const handleAuthError = (errno) => {
+  const authErrMap = {
+    "108404": "账户异常，请重新登录",
+    "100404": "登录失败，请联系管理员",
+    "106401": "此账号已冻结",
+    "108401": "您太久没登录，请重新登录"
+  }
+
+  if (authErrMap.hasOwnProperty(errno)) {
+    ElMessage.error(authErrMap[errno])
+    store.dispatch('user/logout')
+    return false
+  }else if(errno === "100401"){
+    removeItem(ACCESS_TOKEN)
+    refreshToken()  
+    return false
+  }
+  return true
+}
+
+// 关于一般错误处理函数
+export const handleGeneralError = (errno,errmsg) => {
+  if(errno !== 0){
+    ElMessage.error(errmsg)
+    store.commit('user/setLoadingState', false)
+    return false
+  }
+}
+
+
+// 关于网络统一错误处理函数
 export const handleNetworkError = (errStatus) => {
+  console.log('网络错误处理函数执行了')
   const networkErrMap = {
-    "400": "服务器错误,请联系管理员", // 长短 token 不存在
+    "400": "服务器错误,请联系管理员", 
     "401": "未授权，请重新登录",
     "403": "拒绝访问",
     "404": "请求错误，未找到该资源",
@@ -23,47 +56,5 @@ export const handleNetworkError = (errStatus) => {
     ElMessage.error(networkErrMap[errStatus] ?? `其他连接错误 --${errStatus}`);
     return
   }
-  ElMessage.error("无法连接到服务器！");
-  // TODO 解决 登录注册等 500错误的 Loading问题
-}
-
-export const handleAuthError = (errno,config) => {
-//console.log('校验错误处理执行了')
-  const authErrMap = {
-    "10032": "您太久没登录，请重新登录~", // 长 token 过期或错误
-    "10033": "账户未绑定角色，请联系管理员绑定角色",
-    "10034": "该用户未注册，请联系管理员注册用户",
-    "10035": "code 无法获取对应第三方平台用户",
-    "10036": "该账户未关联员工，请联系管理员做关联",
-    "10037": "账号已无效",
-    "10038": "账号未找到",
-    '10039': '请提供验证码',
-    '10040': '验证码错误'
-  }
-
-  if (authErrMap.hasOwnProperty(errno)) {
-    ElMessage.error(authErrMap[errno])
-    // 授权错误，登出账户
-    store.dispatch('user/logout')
-    return false
-  }
-
-  if (errno === 10041) {
-    console.log('响应拦截器非error中获取的code码',errno)
-    // 执行刷新 token
-    removeItem(ACCESS_TOKEN);
-    refreshToken()
-    return false 
-  }
-  return true
-}
-export const handleGeneralError = (errno,errmsg) => {
-  console.log('一般错误处理执行了')
-  console.log(errno,errmsg)
-  if(errno !== 200){
-    console.log(errno,errmsg)
-    ElMessage.error(errmsg)
-		return false
-  }
-  return true
+  ElMessage.error("无法连接到服务器！")
 }

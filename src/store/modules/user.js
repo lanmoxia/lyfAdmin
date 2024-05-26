@@ -13,7 +13,9 @@ export default {
       roles: [],
       buttons: [],
       isLoading: false,
-      activeState: "login"
+      activeState: "login",
+      // 登录标志位解决登录与token缺失报错提示重叠
+      justLoggedIn: false
     }),
     mutations: {
         setAccessToken(state, token) {
@@ -39,6 +41,9 @@ export default {
         },
         setActiveState: (state,str) => {
           state.activeState = str
+        },
+        setJustLoggedIn(state, flag) {
+          state.justLoggedIn = flag
         }
     },
     actions: {
@@ -49,6 +54,7 @@ export default {
           this.commit('user/setAccessToken', result.accessToken)
           this.commit('user/setRefreshToken', result.refreshToken)
           this.commit('user/setUserInfo', result.info)
+          this.commit('user/setJustLoggedIn', true)
           // 保存登录时间
           setTimeStamp()          
         },
@@ -78,7 +84,6 @@ export default {
             }))
             this.commit('user/setRoles', menuList)
             this.commit('user/setButtons', resourcesList)
-            console.log('vuex_userPermissions')
             return menuList
           }
         },
@@ -93,6 +98,7 @@ export default {
             this.commit('app/removeTagsView', {
                 type: 'all'
             })
+            this.commit('user/setJustLoggedIn', false)
             removeAllItem()
             router.push('/login')          
         },

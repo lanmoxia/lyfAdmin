@@ -37,6 +37,10 @@ router.beforeEach(async (to, from, next) => {
         accessRoutes.forEach(item => {
           router.addRoute(item)
         })
+        if (store.state.user.justLoggedIn) {
+          ElMessage.success("登录成功")
+          store.commit('user/setJustLoggedIn', false)
+        }
         return next({ ...to, replace: true })
       }
       nprogress.start()

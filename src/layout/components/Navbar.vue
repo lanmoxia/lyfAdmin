@@ -8,13 +8,14 @@
     </div>
 
     <div class="right-menu">
-      <!-- 引导组件-->
-      <guide class="right-menu-item hover-effect" />
-      <!--页面搜索组件-->
-      <header-search class="right-menu-item hover-effect"></header-search>
-      <!--全屏组件-->
-      <screenfull class="right-menu-item hover-effect" />
-
+      <div class="icon-box">
+        <!-- 引导组件-->
+        <guide class="right-menu-item hover-effect" />
+        <!--页面搜索组件-->
+        <header-search class="right-menu-item hover-effect"></header-search>
+        <!--全屏组件-->
+        <screenfull class="right-menu-item hover-effect" />
+      </div>
       <!-- 登录账号信息 -->
       <el-dropdown class="avatar-container" trigger="click" size="large">
         <div class="avatar-wrapper">
@@ -241,7 +242,6 @@ const logout = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 13px;
   .left-breadcrumb {
     display: flex;
     padding: 0 16px;
@@ -260,18 +260,15 @@ const logout = () => {
     }
   }
   .right-menu {
-    line-height: 50px;
     display: flex;
     align-items: center;
-    padding: 0 16px;
-
+    .icon-box {
+      // border: 1px solid red;
+      display: flex;
+      align-items: center;
+    }
     :deep(.right-menu-item) {
-      display: inline-block;
-      padding: 0 18px 0 0;
-      font-size: 24px;
-      color: #5a5e66;
-      vertical-align: text-bottom;
-
+      padding: 0 15px 0 0;
       &.hover-effect {
         cursor: pointer;
         transition: background 0.3s;
@@ -291,8 +288,8 @@ const logout = () => {
   }
 
   :deep(.avatar) {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     margin-right: 5px;
   }

@@ -63,16 +63,14 @@ export var publicRoutes = [
  * 初始化路由表
  */
 export function resetRouter() {
-    if (store.getters.hasRoles) {
-        const menus = store.getters.roles
-        menus.forEach(menu => {
-            let url = menu.unique
-            let i = url.lastIndexOf('/')
-            let name = url.substring(i + 1, url.length)
-            router.removeRoute(name)
-        })
-    }
-
+  if (store.getters.hasRoles) {
+    const menus = store.getters.roles
+    menus.forEach(menu => {
+      if (router.hasRoute(menu.name)) {
+        router.removeRoute(menu.name)
+      } 
+    })
+  }
 }
 
 const router = createRouter({
