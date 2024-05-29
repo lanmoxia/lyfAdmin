@@ -48,8 +48,8 @@ export default {
     },
     actions: {
         async login(context, userInfo) {
-          const { username, password, captcha_code } = userInfo
-          const [err,res] = await api.userLogin({username,password,captcha_code})
+          const { username, password, captcha_code, code_key } = userInfo
+          const [err,res] = await api.userLogin({username,password,captcha_code,code_key})
           const result = res.data
           this.commit('user/setAccessToken', result.accessToken)
           this.commit('user/setRefreshToken', result.refreshToken)

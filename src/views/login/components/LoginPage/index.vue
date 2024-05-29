@@ -166,10 +166,11 @@ const randomColor = () => {
       return
     }  
     const formData = {
-      ...loginForm,
-      password: md5(loginForm.password)
+      username: loginForm.username,
+      password: md5(loginForm.password),
+      captcha_code: loginForm.captcha_code,
+      code_key: loginForm.code_key // 添加 code_keyloginForm,
     }
-    
     await store.dispatch('user/login', formData)
     router.push('/')
     store.commit('user/setLoadingState', false)
@@ -182,8 +183,11 @@ const randomColor = () => {
  const getCodeImg = async () => {
   const [err,res] = await api.getCode()
   code_net.value = res.data.code
-  loginForm.captcha_code = code_net.value 
   loginForm.code_key = res.data.code_key; // 保存 code_key
+   // 检查 '记住我' 状态并填充验证码
+   if (checked.value) {
+    loginForm.captcha_code = code_net.value
+  }
  }
 </script>
 
