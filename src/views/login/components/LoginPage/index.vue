@@ -98,7 +98,8 @@ const checkChange = (checked) => {
 const loginForm = reactive({
   username: '',
   password: '',
-  captcha_code: ''
+  captcha_code: '',
+  code_key: '' // 新增 code_key 属性
 })
 
 //登录验证规则
@@ -182,6 +183,7 @@ const randomColor = () => {
   const [err,res] = await api.getCode()
   code_net.value = res.data.code
   loginForm.captcha_code = code_net.value 
+  loginForm.code_key = res.data.code_key; // 保存 code_key
  }
 </script>
 
