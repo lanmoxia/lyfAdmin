@@ -61,7 +61,7 @@ export default {
         async mobileLogin(context,userInfo){
           const { mobile, sms_code} = userInfo
           const [err,res] = await api.mobileLogin({ mobile,sms_code})
-          const result = res.data.data
+          const result = res.data
           this.commit('user/setAccessToken', result.accessToken)
           this.commit('user/setRefreshToken', result.refreshToken)
           this.commit('user/setUserInfo', result.info)

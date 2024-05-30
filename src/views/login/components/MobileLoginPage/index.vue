@@ -120,16 +120,13 @@ const sedCode = () => {
  * 注册登录
  */
  const handleLogin = () => {
-  loginFromRef.value.validate (valid => {
+  loginFromRef.value.validate (async valid => {
     if (!valid) return 
     store.commit('user/setLoadingState', true)
-    store.dispatch('user/mobileLogin', loginForm).then((res)=>{
-      router.push('/')
-      store.commit('user/setLoadingState', false)
-    }).catch((err) => {
-      console.log(err)
-      store.commit('user/setLoadingState', false)
-    })
+    // await store.dispatch('user/mobileLogin', loginForm)
+    ElMessage.success("演示成功")
+    // router.push('/')
+    store.commit('user/setLoadingState', false)
   })
 }
 

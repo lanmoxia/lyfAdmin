@@ -9,6 +9,7 @@ import { privateRoutes, publicRoutes } from '@/router'
  */
 function hasPermission(roles, route) { // (菜单权限 单个私有路由)
   let hasRouter = false
+  console.log(roles)
   for (let i = 0; i < roles.length; i++) {
     if (roles[i].unique === route.path || '/' + roles[i].unique === route.path) {
       hasRouter = true

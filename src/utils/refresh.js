@@ -27,9 +27,10 @@ export const retryRequest = () => {
 export const refreshToken = async () => {
   if (!isRefreshing ) {
     isRefreshing  = true
+    const refToken = getItem(REFRESH_TOKEN)
     const [err, res] = await api.refreshToken( {
       headers: {
-        [PASS]: `Bearer ${""}`
+        [PASS]: `Bearer ${refToken}`
       }
     })
     if (err) {
