@@ -46,6 +46,7 @@ server.interceptors.response.use(
         })  
       }
       handleGeneralError(data.errno,data.errmsg)
+      return Promise.reject(data); 
     }
     return response
   }, err => {

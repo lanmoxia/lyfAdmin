@@ -185,7 +185,8 @@ const userStateChange = async (val,row) => {
   const newStatus = val ? 1 : 0
   if (row.status === newStatus) return
   rowLoading[row._id] = true
-  await api.userUpdate(row._id, {status: newStatus})
+  const [err,res] = await api.userUpdate(row._id, {status: newStatus})
+  console.log(res)
   row.status = newStatus
   switchStatus[row._id] = newStatus === 1 // 更新 switchStatus
   ElMessage.success("用户状态更新成功")
@@ -245,7 +246,6 @@ const onShowRoleClick = row => {
 watch(roleDialogVisible, val => {
   if (!val) selectUserId.value = ''
 })
-
 
 //获取搜索结果
 const getSearchResult = async () => {
@@ -317,15 +317,22 @@ function handleImport() {
     const formData = new FormData()
     formData.append('file', file.raw);
     const [err,res] = await api.batchCreateUser(formData)
-    const result = res.data
-    loading.value = false
-    loadText.value = "加载中"
-    ElMessage.success({
-      message: `创建成功: ${result.successCount}个, 失败: ${result.failureCount}个`,
-      duration: 10000
-    })
+    if(!err){
+      const result = res.data
+      loading.value = false
+      loadText.value = "加载中"
+      if(result.successCount === 0){
+        ElMessage.error({
+        message: `重复创建，有 ${result.failureCount} 个重复账户`,
+        duration: 2000
+      })}else {
+        ElMessage.success({
+        message: `创建成功: ${result.successCount}个, 失败: ${result.failureCount}个`,
+        duration: 2000
+      })}
+    }
     uploadUserDialog.value.visible = false
-    getUserList()
+    getUserList() 
 }
 
 /*** 创建用户参数 */

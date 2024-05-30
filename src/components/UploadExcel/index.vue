@@ -83,7 +83,7 @@ const requestUpload = (options) => {
 /** 文件上传成功处理 */
 const handleFileSuccess = (response, file) => {
   emits('onSuccess', file)
-  ElMessage.success("导入成功") 
+  ElMessage.success({message: "导入成功",duration: 1000})
   onClose()
  // // 这里上传服务器用户模板 已经上传完毕
 //  // 由于response可能是一个数组，其中第一个元素是错误信息（如果有的话），第二个元素是实际的响应数据

@@ -31,14 +31,12 @@ export const handleGeneralError = (errno,errmsg) => {
   if(errno !== 0){
     ElMessage.error(errmsg)
     store.commit('user/setLoadingState', false)
-    return false
   }
 }
 
 
 // 关于网络统一错误处理函数
 export const handleNetworkError = (errStatus) => {
-  console.log('网络错误处理函数执行了')
   const networkErrMap = {
     "400": "服务器错误,请联系管理员", 
     "401": "未授权，请重新登录",
