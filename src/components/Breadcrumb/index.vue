@@ -2,13 +2,15 @@
   <!-- 面包屑 -->
   <el-breadcrumb class="breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item, index) in breadcrumbData" :key="item.path">
-        <span v-if="index === breadcrumbData.length - 1" class="no-redirect">{{
-          item.meta.title
-        }}</span>
-        <a v-else class="redirect" @click.prevent="onLinkClick(item)">{{
-          item.meta.title
-        }}</a>
+      <el-breadcrumb-item v-for="(item, index) in titleList" :key="item.path">
+        <!-- 如果当前的 index 是最后一个路由就渲染 span -->
+        <span v-if="index === titleList.length - 1" class="no-redirect">
+        {{item.meta.title}}
+        </span>
+        <!-- 如果当前的 index 不是最后一个路由就渲染 a 标签 -->
+        <a v-else class="redirect" @click.prevent="onLinkClick(item)">
+          {{item.meta.title}}
+        </a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -21,13 +23,12 @@ import { useStore } from 'vuex'
 
 const route = useRoute()
 
-const breadcrumbData = ref([])
+const titleList = ref([])
 const getBreadcrumbData = () => {
-  breadcrumbData.value = route.matched.filter( 
+  titleList.value = route.matched.filter( 
     item => item.meta && item.meta.title
   )
 }
-
 
 watch(
   route,

@@ -66,9 +66,13 @@ export function resetRouter() {
   if (store.getters.hasRoles) {
     const menus = store.getters.roles
     menus.forEach(menu => {
-      if (router.hasRoute(menu.name)) {
-        router.removeRoute(menu.name)
-      } 
+      let url = menu.unique
+      let i = url.lastIndexOf('/')
+      let name = url.substring(i + 1, url.length)
+       // 检查路由是否存在
+       if (router.hasRoute(name)) {
+        router.removeRoute(name)
+      }
     })
   }
 }

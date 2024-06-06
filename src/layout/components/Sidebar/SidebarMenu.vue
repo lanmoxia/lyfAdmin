@@ -14,10 +14,12 @@ import SidebarItem from "./SidebarItem";
 
 const router = useRouter();
 const routes = computed(() => {
-  // filterRouters 过滤脱离层级的路由 
+  // filterRouters : 剔除一级路由和其他子路由path相同的一级路由
   const filterRoutes = filterRouters(router.getRoutes());
+  // generateMenus: 剔除公共路由比如 401，403，login, home有 meta 保留
   return generateMenus(filterRoutes);
-});
+})
+
 
 // 计算高亮 menu 的方法
 const route = useRoute();

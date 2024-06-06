@@ -35,9 +35,7 @@ export default{
       path: '/account/detail',
       name: 'accountDetail',
       component: () => import('@/views/permissions-page/accountDetail.vue'),
-      meta: { title: '账号详情'},
-      hidden: true,//true不显示在侧边栏
-
+      meta: { title: '账号详情'}
     }
 
   ]

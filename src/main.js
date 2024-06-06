@@ -24,7 +24,7 @@ import RightToolbar from '@/components/RightToolbar'
 // 分页组件
 import Pagination from '@/components/Pagination'
 // svg组件
-import svgIcon from "@/components/SvgIcon/index.vue";
+import svgIcon from "@/components/SvgIcon";
 
 // 全局注册按钮级别权限组件
 import Auth from "@/components/ReAuth";

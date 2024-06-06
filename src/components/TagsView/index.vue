@@ -3,10 +3,10 @@
   <div class="tags-view-container">
     <el-scrollbar class="tags-view-wrapper">
 
-      <router-link class="tags-view-item" :class="isActive(tag) ? 'active' : ''" :style="{
-        backgroundColor: isActive(tag) ? '#ffffff' : '',
-        borderColor: isActive(tag) ? '#f7f7f7' : ''
-      }" v-for="(tag, index) in $store.getters.tagsViewList" :key="tag.fullPath" :to="{ path: tag.fullPath }"
+      <router-link class="tags-view-item" 
+        :class="isActive(tag) ? 'active' : ''" 
+        :style="{ backgroundColor: isActive(tag) ? '#ffffff' : '', borderColor: isActive(tag) ? '#f7f7f7' : ''}" 
+        v-for="(tag, index) in $store.getters.tagsViewList" :key="tag.fullPath" :to="{ path: tag.fullPath }"
         @contextmenu.prevent="openMenu($event, index)">
 
         {{ tag.title }}
@@ -14,6 +14,7 @@
         <template v-if="!isAffiix(tag)">
           <Close @click.prevent.stop="onCloseClick(index, tag)" class="el-icon-close" />
         </template>
+        
       </router-link>
 
     </el-scrollbar>

@@ -1,7 +1,10 @@
 <template>
   <!-- 全屏组件 -->
   <div>
-    <svg-icon id="guide-full" size="22" color="#5a5e66" :icon="isFullscreen ? 'exit-fullscreen' : 'fullscreen'" @click="onToggle" />
+    <svg-icon id="guide-full" 
+      size="22" color="#5a5e66" 
+      :icon="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
+      @click="onToggle" />
   </div>
 </template>
 

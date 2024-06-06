@@ -9,7 +9,6 @@ import { privateRoutes, publicRoutes } from '@/router'
  */
 function hasPermission(roles, route) { // (菜单权限 单个私有路由)
   let hasRouter = false
-  console.log(roles)
   for (let i = 0; i < roles.length; i++) {
     if (roles[i].unique === route.path || '/' + roles[i].unique === route.path) {
       hasRouter = true
@@ -29,14 +28,17 @@ export function filterPrivateRoutes(routes, roles) { // (私有路由 菜单权�
   const res = []
   routes.forEach(route => {
     const tmp = { ...route }
-    if (hasPermission(roles, tmp)) { // (菜单权限 单个私有路由)
+    const role = roles.find(r => r.unique === route.path || '/' + r.unique === route.path)
+    if (role) {
+      // 将后端的 hidden 属性合并到前端的路由对象中
+      tmp.hidden = role.hidden
       if (tmp.children) {
         tmp.children = filterPrivateRoutes(tmp.children, roles)
       }
       res.push(tmp)
     }
   })
-
+console.log(res)
   return res
 }
 
@@ -62,6 +64,7 @@ export default {
     generateRoutes({ commit }, roles) {  // 为什么使用promise 呢？
       return new Promise(resolve => {
         let accessedRoutes = filterPrivateRoutes(privateRoutes, roles) // (私有路由 菜单权限)
+        console.log(accessedRoutes)
         accessedRoutes.push({
           path: '/:catchAll(.*)',
           redirect: '/404'

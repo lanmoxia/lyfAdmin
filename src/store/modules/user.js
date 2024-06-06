@@ -30,16 +30,16 @@ export default {
           state.userInfo = userInfo
           setItem(USERINFO, userInfo)
         },
-        setRoles: (state, roles) => {
+        setRoles(state, roles){
           state.roles = roles
         },
-        setButtons: (state, buttons) => {
+        setButtons(state, buttons){
           state.buttons = buttons
         },
-        setLoadingState: (state,bool) => {
+        setLoadingState(state,bool){
           state.isLoading = bool
         },
-        setActiveState: (state,str) => {
+        setActiveState(state,str){
           state.activeState = str
         },
         setJustLoggedIn(state, flag) {
@@ -72,7 +72,7 @@ export default {
           const [err,res] = await api.userPermissions()
           if(!err){
             const menuList = res.data[0].menus.map(obj => {
-              let result = { unique: obj.unique,sort: obj.sort }
+              let result = { unique: obj.unique,sort: obj.sort, hidden: obj.hidden}
               if (obj.icon && obj.icon.trim() !== '') {
                 result.icon = obj.icon.replace(/<\?xml.*?\?>|<!DOCTYPE.*?>/g, '')
               }

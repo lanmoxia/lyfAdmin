@@ -75,7 +75,9 @@
           <template #default="{ row }">
             <el-button type="primary" size="small" @click="onShowClick(row)">查看</el-button>
             <el-button type="info" size="small" @click="onShowRoleClick(row)">角色</el-button>
-            <el-button type="danger" size="small" @click="onRemoveClick(row)">删除</el-button>
+            <Auth :value="['permission:btn:supadmin_delete']">
+              <el-button type="danger" size="small" @click="onRemoveClick(row)">删除</el-button>
+            </Auth>
           </template>
         </el-table-column>
       </el-table>

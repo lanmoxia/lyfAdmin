@@ -32,7 +32,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       if (!store.getters.hasRoles) {
         const menuList  = await store.dispatch('user/getPermissionData')
-        const accessRoutes = await store.dispatch('permission/generateRoutes', menuList)
+        const accessRoutes = await store.dispatch('permission/generateRoutes', menuList)       
         filterRoutesIcon(accessRoutes, menuList)
         accessRoutes.forEach(item => {
           router.addRoute(item)
