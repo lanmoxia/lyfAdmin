@@ -79,7 +79,6 @@ onMounted(() => {
 // 获取用户信息
 const getUser = async () => {
   const [err,res] = await api.userOne(route.query.id)
-  console.log(res.data)
   userInfo.value = res.data.user
 }
 

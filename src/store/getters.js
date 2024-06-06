@@ -17,10 +17,6 @@ const getters = {
   isProgress: state => state.user.isProgress,
   progressNum: state => state.user.progressNum,
   isLoading: state => state.user.isLoading,
-  activeState: state => state.user.activeState,
-  // 检查菜单显示隐藏
-  visibleMenuItems: state=> {
-    return getters.roles.filter(item => !item.hidden)
-  }
+  activeState: state => state.user.activeState
 }
 export default getters

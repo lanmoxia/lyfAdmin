@@ -38,7 +38,6 @@ export function filterPrivateRoutes(routes, roles) { // (私有路由 菜单权�
       res.push(tmp)
     }
   })
-console.log(res)
   return res
 }
 
@@ -64,7 +63,6 @@ export default {
     generateRoutes({ commit }, roles) {  // 为什么使用promise 呢？
       return new Promise(resolve => {
         let accessedRoutes = filterPrivateRoutes(privateRoutes, roles) // (私有路由 菜单权限)
-        console.log(accessedRoutes)
         accessedRoutes.push({
           path: '/:catchAll(.*)',
           redirect: '/404'

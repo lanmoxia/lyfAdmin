@@ -88,7 +88,6 @@ export default {
           }
         },
         logout() {
-            console.log('退出登录')
             resetRouter()
             this.commit('user/setAccessToken', '')
             this.commit('user/setRefreshToken', '')

@@ -165,7 +165,6 @@ const store = useStore()
       store.commit('user/setActiveState', 'login') 
       store.commit('user/setLoadingState', false)       
     }else {
-      console.log(err)
       getCodeImg()
       store.commit('user/setLoadingState', false)
     }

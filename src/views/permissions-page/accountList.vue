@@ -188,7 +188,6 @@ const userStateChange = async (val,row) => {
   if (row.status === newStatus) return
   rowLoading[row._id] = true
   const [err,res] = await api.userUpdate(row._id, {status: newStatus})
-  console.log(res)
   row.status = newStatus
   switchStatus[row._id] = newStatus === 1 // 更新 switchStatus
   ElMessage.success("用户状态更新成功")
@@ -224,7 +223,6 @@ const onShowClick = row => {
 
 // 删除用户
 const onRemoveClick = row => {
-   console.log(row.username)
   ElMessageBox.confirm(
     "确定要删除" +  row.username  + "吗",
     { type: 'warning' }
@@ -351,7 +349,6 @@ const handleAddUser = () => {
 const onDownTemplate = async () => {
   try {
     const response = await api.userTemplate();
-    console.log(response)
     const blobData = Array.isArray(response) ? response[1] : response;
     if (blobData) {
        // 创建一个Blob对象
